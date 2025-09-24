@@ -77,7 +77,7 @@ const Christmas = () => {
         {/* Show Features */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
           <Card className="bg-christmas-dark/80 backdrop-blur-sm border-christmas-gold/30 p-6">
-            <Star className="w-12 h-12 text-christmas-gold mb-4 animate-twinkle" />
+            <Star className="w-12 h-12 text-christmas-gold mb-4 animate-gentle-glow" />
             <h3 className="text-2xl font-bold text-christmas-gold mb-2">Magical Projections</h3>
             <p className="text-green-100">
               Enchanting winter scenes and holiday imagery projected across 
@@ -86,7 +86,7 @@ const Christmas = () => {
           </Card>
 
           <Card className="bg-christmas-dark/80 backdrop-blur-sm border-christmas-gold/30 p-6">
-            <Gift className="w-12 h-12 text-christmas mb-4 animate-twinkle" />
+            <Gift className="w-12 h-12 text-christmas mb-4 animate-gentle-glow" />
             <h3 className="text-2xl font-bold text-christmas mb-2">Musical Harmony</h3>
             <p className="text-green-100">
               Beloved Christmas carols and festive melodies perfectly 
@@ -95,7 +95,7 @@ const Christmas = () => {
           </Card>
 
           <Card className="bg-christmas-dark/80 backdrop-blur-sm border-christmas-gold/30 p-6">
-            <SnowflakeIcon className="w-12 h-12 text-christmas-secondary mb-4 animate-twinkle" />
+            <SnowflakeIcon className="w-12 h-12 text-christmas-secondary mb-4 animate-gentle-glow" />
             <h3 className="text-2xl font-bold text-christmas-secondary mb-2">Winter Effects</h3>
             <p className="text-green-100">
               Simulated snowfall, frost patterns, and twinkling icicles 
