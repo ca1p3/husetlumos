@@ -66,7 +66,7 @@ const Index = () => {
           <Link to="/christmas" className="group">
             <Card className="theme-card p-8 bg-card/50 backdrop-blur-sm border-2 border-christmas/30 hover:border-christmas/60">
               <div className="text-center space-y-4">
-                <TreePine className="w-16 h-16 mx-auto text-christmas animate-twinkle christmas-glow" />
+                <TreePine className="w-16 h-16 mx-auto text-christmas animate-gentle-glow christmas-glow" />
                 <h2 className="text-3xl font-bold text-christmas">Christmas Show</h2>
                 <p className="text-muted-foreground">
                   Magical winter wonderland with twinkling lights, festive music, and heartwarming holiday spirit

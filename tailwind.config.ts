@@ -101,6 +101,10 @@ export default {
           "0%, 100%": { opacity: "0" },
           "50%": { opacity: "1" },
         },
+        "gentle-glow": {
+          "0%, 100%": { opacity: "0.8", transform: "scale(1)" },
+          "50%": { opacity: "1", transform: "scale(1.05)" },
+        },
         snowfall: {
           "0%": { transform: "translateY(-100vh) rotate(0deg)" },
           "100%": { transform: "translateY(100vh) rotate(360deg)" },
@@ -129,6 +133,7 @@ export default {
         "accordion-up": "accordion-up 0.2s ease-out",
         float: "float 6s ease-in-out infinite",
         twinkle: "twinkle 2s ease-in-out infinite",
+        "gentle-glow": "gentle-glow 3s ease-in-out infinite",
         snowfall: "snowfall 10s linear infinite",
         spookyFloat: "spookyFloat 4s ease-in-out infinite",
         shimmer: "shimmer 2s infinite",

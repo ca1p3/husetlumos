@@ -64,7 +64,7 @@ const Christmas = () => {
       <div className="relative z-10 container mx-auto px-4 py-12">
         {/* Header */}
         <div className="text-center mb-16">
-          <TreePine className="w-20 h-20 mx-auto text-christmas-secondary animate-twinkle christmas-glow mb-6" />
+          <TreePine className="w-20 h-20 mx-auto text-christmas-secondary animate-gentle-glow christmas-glow mb-6" />
           <h1 className="text-5xl md:text-7xl font-bold text-christmas mb-4">
             Christmas Light Show
           </h1>
