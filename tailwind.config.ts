@@ -47,6 +47,18 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        halloween: {
+          DEFAULT: "hsl(var(--halloween-primary))",
+          secondary: "hsl(var(--halloween-secondary))",
+          dark: "hsl(var(--halloween-dark))",
+          accent: "hsl(var(--halloween-accent))",
+        },
+        christmas: {
+          DEFAULT: "hsl(var(--christmas-primary))",
+          secondary: "hsl(var(--christmas-secondary))",
+          gold: "hsl(var(--christmas-gold))",
+          dark: "hsl(var(--christmas-dark))",
+        },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
@@ -80,10 +92,47 @@ export default {
             height: "0",
           },
         },
+        float: {
+          "0%, 100%": { transform: "translateY(0px) rotate(0deg)" },
+          "33%": { transform: "translateY(-20px) rotate(120deg)" },
+          "66%": { transform: "translateY(-10px) rotate(240deg)" },
+        },
+        twinkle: {
+          "0%, 100%": { opacity: "0" },
+          "50%": { opacity: "1" },
+        },
+        snowfall: {
+          "0%": { transform: "translateY(-100vh) rotate(0deg)" },
+          "100%": { transform: "translateY(100vh) rotate(360deg)" },
+        },
+        spookyFloat: {
+          "0%, 100%": { transform: "translateY(0px) rotate(-5deg)" },
+          "50%": { transform: "translateY(-15px) rotate(5deg)" },
+        },
+        shimmer: {
+          "0%": { left: "-100%" },
+          "100%": { left: "100%" },
+        },
+        fadeInUp: {
+          from: {
+            opacity: "0",
+            transform: "translateY(30px)",
+          },
+          to: {
+            opacity: "1",
+            transform: "translateY(0)",
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        float: "float 6s ease-in-out infinite",
+        twinkle: "twinkle 2s ease-in-out infinite",
+        snowfall: "snowfall 10s linear infinite",
+        spookyFloat: "spookyFloat 4s ease-in-out infinite",
+        shimmer: "shimmer 2s infinite",
+        fadeInUp: "fadeInUp 0.8s ease-out",
       },
     },
   },
