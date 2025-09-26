@@ -5,10 +5,12 @@ export const useFPPStatus = () => {
   return useQuery({
     queryKey: ['fpp-status'],
     queryFn: () => fppApi.getStatus(),
-    refetchInterval: 5000, // Poll every 5 seconds
-    retry: 3,
-    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
-    staleTime: 2000, // Consider data stale after 2 seconds
+    refetchInterval: 30000, // Poll every 30 seconds to reduce errors
+    retry: 1, // Only retry once
+    retryDelay: 5000,
+    staleTime: 25000, // Consider data stale after 25 seconds
+    refetchOnWindowFocus: false, // Don't refetch on window focus
+    refetchOnMount: false, // Don't refetch on component mount after first load
   });
 };
 

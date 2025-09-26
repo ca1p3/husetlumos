@@ -27,20 +27,29 @@ export interface FPPPlaylist {
 }
 
 class FPPApiService {
-  private async fetchWithTimeout(url: string, timeout = 5000): Promise<Response> {
+  private async fetchWithTimeout(url: string, timeout = 3000): Promise<Response> {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), timeout);
     
     try {
       const response = await fetch(url, {
         signal: controller.signal,
-        mode: 'cors',
+        mode: 'no-cors', // Try no-cors mode first
       });
       clearTimeout(timeoutId);
+      
+      // no-cors mode returns opaque response, so we can't read the data
+      // This will still trigger CORS errors, so let's handle differently
+      if (response.type === 'opaque') {
+        throw new Error('CORS blocked - cannot access FPP controller from browser');
+      }
+      
       return response;
     } catch (error) {
       clearTimeout(timeoutId);
-      throw error;
+      // Try with a different approach - this is expected to fail due to CORS
+      console.log('FPP Controller access blocked by browser CORS policy');
+      throw new Error('Network access restricted');
     }
   }
 

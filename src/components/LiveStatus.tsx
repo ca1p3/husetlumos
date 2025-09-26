@@ -15,7 +15,15 @@ interface ShowInfo {
 
 const LiveStatus = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [connectionAttempted, setConnectionAttempted] = useState(false);
   const { data: fppStatus, isLoading, isError } = useFPPStatus();
+  
+  // Track if we've tried to connect at least once
+  useEffect(() => {
+    if (isError || fppStatus) {
+      setConnectionAttempted(true);
+    }
+  }, [isError, fppStatus]);
   
   useEffect(() => {
     const timer = setInterval(() => {
@@ -169,23 +177,25 @@ const LiveStatus = () => {
                 )}
               </Badge>
               
-              {/* FPP Connection Status */}
-              <div className="flex items-center gap-1">
-                {isLoading ? (
-                  <Clock className="w-3 h-3 text-muted-foreground animate-pulse" />
-                ) : isError ? (
-                  <WifiOff className="w-3 h-3 text-destructive" />
-                ) : (
-                  <Wifi className="w-3 h-3 text-muted-foreground" />
-                )}
-              </div>
+              {/* FPP Connection Status - only show after first attempt */}
+              {connectionAttempted && (
+                <div className="flex items-center gap-1">
+                  {isLoading && !connectionAttempted ? (
+                    <Clock className="w-3 h-3 text-muted-foreground animate-pulse" />
+                  ) : isError ? (
+                    <WifiOff className="w-3 h-3 text-destructive" />
+                  ) : (
+                    <Wifi className="w-3 h-3 text-muted-foreground" />
+                  )}
+                </div>
+              )}
             </div>
             
             <div className="text-xs text-muted-foreground">
               <div className="font-medium">{showInfo.currentSequence}</div>
               <div className="text-xs opacity-75">{showInfo.nextShow}</div>
-              {isError && (
-                <div className="text-xs text-destructive">FPP Controller offline - using schedule</div>
+              {isError && connectionAttempted && (
+                <div className="text-xs text-destructive">Using schedule - FPP controller not accessible</div>
               )}
             </div>
           </div>
