@@ -3,7 +3,6 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Ghost, TreePine, Zap } from "lucide-react";
 import heroImage from "@/assets/huset-lumos-hero.jpg";
-import LiveStatus from "@/components/LiveStatus";
 
 const FloatingLight = ({ delay = 0 }: { delay?: number }) => (
   <div 
@@ -43,11 +42,6 @@ const Index = () => {
           <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl">
             Immersive light shows that transform Halloween and Christmas into magical experiences
           </p>
-        </div>
-
-        {/* Live Status */}
-        <div className="mb-8 max-w-2xl w-full">
-          <LiveStatus />
         </div>
 
         {/* Theme Navigation Cards */}
