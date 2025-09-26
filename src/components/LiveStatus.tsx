@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Ghost, TreePine, Play, Clock, Wifi, WifiOff } from "lucide-react";
-import { useFPPStatus } from "@/hooks/useFPPStatus";
+import { Ghost, TreePine, Play, Clock } from "lucide-react";
 
 interface ShowInfo {
   name: string;
@@ -15,15 +14,6 @@ interface ShowInfo {
 
 const LiveStatus = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
-  const [connectionAttempted, setConnectionAttempted] = useState(false);
-  const { data: fppStatus, isLoading, isError } = useFPPStatus();
-  
-  // Track if we've tried to connect at least once
-  useEffect(() => {
-    if (isError || fppStatus) {
-      setConnectionAttempted(true);
-    }
-  }, [isError, fppStatus]);
   
   useEffect(() => {
     const timer = setInterval(() => {
@@ -35,47 +25,12 @@ const LiveStatus = () => {
 
   const getShowStatus = (): ShowInfo => {
     const now = new Date();
-    const month = now.getMonth() + 1;
-    
-    // If we have FPP data, use it
-    if (fppStatus && !isError) {
-      const isLive = fppStatus.status === 1; // 1 = playing
-      const currentSequence = fppStatus.current_sequence || "No sequence";
-      
-      // Determine theme based on season and sequence name
-      let theme = "default";
-      let name = "Light Show";
-      let icon = <Play className="w-5 h-5" />;
-      
-      if (month === 10) {
-        theme = "halloween";
-        name = "Halloween Show";
-        icon = <Ghost className="w-5 h-5" />;
-      } else if (month === 12 && now.getDate() <= 25) {
-        theme = "christmas";
-        name = "Christmas Show";
-        icon = <TreePine className="w-5 h-5" />;
-      }
-      
-      return {
-        name,
-        isLive,
-        currentSequence: isLive ? currentSequence : "Off Air",
-        nextShow: isLive ? 
-          (fppStatus.seconds_remaining ? 
-            `${Math.ceil(fppStatus.seconds_remaining / 60)} min remaining` : 
-            "Playing now") : 
-          "Waiting for next show",
-        icon,
-        theme
-      };
-    }
-    
-    // Fallback to time-based logic when FPP is unavailable
+    const month = now.getMonth() + 1; // 0-based to 1-based
     const hour = now.getHours();
     
+    // Halloween season: October
     if (month === 10) {
-      const isShowTime = hour >= 18 && hour <= 22;
+      const isShowTime = hour >= 18 && hour <= 22; // 6 PM to 10 PM
       return {
         name: "Halloween Show",
         isLive: isShowTime,
@@ -86,8 +41,9 @@ const LiveStatus = () => {
       };
     }
     
+    // Christmas season: December 1-25
     if (month === 12 && now.getDate() <= 25) {
-      const isShowTime = hour >= 17 && hour <= 23;
+      const isShowTime = hour >= 17 && hour <= 23; // 5 PM to 11 PM
       return {
         name: "Christmas Show",
         isLive: isShowTime,
@@ -98,6 +54,7 @@ const LiveStatus = () => {
       };
     }
     
+    // Off season
     return {
       name: "Light Shows",
       isLive: false,
@@ -176,27 +133,11 @@ const LiveStatus = () => {
                   'OFFLINE'
                 )}
               </Badge>
-              
-              {/* FPP Connection Status - only show after first attempt */}
-              {connectionAttempted && (
-                <div className="flex items-center gap-1">
-                  {isLoading && !connectionAttempted ? (
-                    <Clock className="w-3 h-3 text-muted-foreground animate-pulse" />
-                  ) : isError ? (
-                    <WifiOff className="w-3 h-3 text-destructive" />
-                  ) : (
-                    <Wifi className="w-3 h-3 text-muted-foreground" />
-                  )}
-                </div>
-              )}
             </div>
             
             <div className="text-xs text-muted-foreground">
               <div className="font-medium">{showInfo.currentSequence}</div>
               <div className="text-xs opacity-75">{showInfo.nextShow}</div>
-              {isError && connectionAttempted && (
-                <div className="text-xs text-destructive">Using schedule - FPP controller not accessible</div>
-              )}
             </div>
           </div>
         </div>
@@ -204,11 +145,6 @@ const LiveStatus = () => {
         <div className="text-right text-xs text-muted-foreground">
           <div>{currentTime.toLocaleTimeString()}</div>
           <div>{currentTime.toLocaleDateString()}</div>
-          {fppStatus && (
-            <div className="text-xs opacity-75">
-              FPP v{fppStatus.fppd}
-            </div>
-          )}
         </div>
       </div>
     </Card>
