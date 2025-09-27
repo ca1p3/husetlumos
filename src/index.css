@@ -130,16 +130,16 @@
   }
   
   .magical-glow {
-    box-shadow: var(--glow-primary);
+    filter: drop-shadow(0 0 10px hsl(47 96% 53% / 0.4));
     transition: all 0.3s ease;
   }
 
   .halloween-glow {
-    box-shadow: var(--glow-halloween);
+    filter: drop-shadow(0 0 15px hsl(24 100% 60% / 0.5));
   }
 
   .christmas-glow {
-    box-shadow: var(--glow-christmas);
+    filter: drop-shadow(0 0 15px hsl(0 84% 47% / 0.5));
   }
 
   .sparkle {
