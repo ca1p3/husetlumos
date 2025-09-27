@@ -56,7 +56,7 @@ const Christmas = () => {
         <Link to="/">
           <Button variant="ghost" className="text-christmas-gold hover:text-christmas-gold/80 hover:bg-christmas-gold/10">
             <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to Huset Lumos
+            Tillbaka till Huset Lumos
           </Button>
         </Link>
       </div>
@@ -66,11 +66,11 @@ const Christmas = () => {
         <div className="text-center mb-16">
           <TreePine className="w-20 h-20 mx-auto text-christmas-secondary animate-gentle-glow christmas-glow mb-6" />
           <h1 className="text-5xl md:text-7xl font-bold text-christmas mb-4">
-            Christmas Light Show
+            Jul Ljusshow
           </h1>
           <p className="text-xl text-green-100 max-w-3xl mx-auto">
-            Experience the magic of Christmas through a breathtaking display of lights, 
-            music, and wonder that brings the warmth of the season to life
+            Upplev julens magi genom en fantastisk uppvisning av ljus, 
+            musik och förundran som för årstidstidens värme till liv
           </p>
         </div>
 
@@ -78,28 +78,28 @@ const Christmas = () => {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
           <Card className="bg-christmas-dark/80 backdrop-blur-sm border-christmas-gold/30 p-6">
             <Star className="w-12 h-12 text-christmas-gold mb-4 animate-gentle-glow" />
-            <h3 className="text-2xl font-bold text-christmas-gold mb-2">Magical Projections</h3>
+            <h3 className="text-2xl font-bold text-christmas-gold mb-2">Magiska Projektioner</h3>
             <p className="text-green-100">
-              Enchanting winter scenes and holiday imagery projected across 
-              surfaces, creating a immersive wonderland
+              Förtrollande vinterscener och holiday-bilder projicerade över 
+              ytor, skapar ett uppslukande underland
             </p>
           </Card>
 
           <Card className="bg-christmas-dark/80 backdrop-blur-sm border-christmas-gold/30 p-6">
             <Gift className="w-12 h-12 text-christmas mb-4 animate-gentle-glow" />
-            <h3 className="text-2xl font-bold text-christmas mb-2">Musical Harmony</h3>
+            <h3 className="text-2xl font-bold text-christmas mb-2">Musikalisk Harmoni</h3>
             <p className="text-green-100">
-              Beloved Christmas carols and festive melodies perfectly 
-              synchronized with dancing light patterns
+              Älskade julsånger och festliga melodier perfekt 
+              synkroniserade med dansande ljusmönster
             </p>
           </Card>
 
           <Card className="bg-christmas-dark/80 backdrop-blur-sm border-christmas-gold/30 p-6">
             <SnowflakeIcon className="w-12 h-12 text-christmas-secondary mb-4 animate-gentle-glow" />
-            <h3 className="text-2xl font-bold text-christmas-secondary mb-2">Winter Effects</h3>
+            <h3 className="text-2xl font-bold text-christmas-secondary mb-2">Vinter Effekter</h3>
             <p className="text-green-100">
-              Simulated snowfall, frost patterns, and twinkling icicles 
-              create an authentic winter wonderland atmosphere
+              Simulerat snöfall, frost-mönster och glittrande istappar 
+              skapar en autentisk vinter-underland atmosfär
             </p>
           </Card>
         </div>
@@ -107,25 +107,25 @@ const Christmas = () => {
         {/* Show Details */}
         <div className="max-w-4xl mx-auto">
           <Card className="bg-christmas-dark/80 backdrop-blur-sm border-christmas-gold/30 p-8">
-            <h2 className="text-3xl font-bold text-christmas-gold mb-6">The Experience</h2>
+            <h2 className="text-3xl font-bold text-christmas-gold mb-6">Upplevelsen</h2>
             <div className="space-y-4 text-green-100">
               <p>
-                Our Christmas light show is a celebration of the season's warmth and joy, 
-                featuring thousands of LED lights orchestrated in perfect harmony with 
-                classic holiday music. The display transforms any space into a magical 
-                winter wonderland that captures the heart of Christmas.
+                Vår jul-ljusshow är en firande av säsongens värme och glädje, 
+                med tusentals LED-ljus orkestrerade i perfekt harmoni med 
+                klassisk julmusik. Displayen förvandlar vilket utrymme som helst till ett magiskt 
+                vinter-underland som fångar julens hjärta.
               </p>
               <p>
-                From gentle snowfall effects that dance with soft blue and white lights 
-                to jubilant sequences featuring red and green bursts synchronized with 
-                "Jingle Bells," every moment is crafted to evoke the wonder and joy 
-                of the Christmas season.
+                Från mjuka snöfall-effekter som dansar med mjuka blå och vita ljus 
+                till jublande sekvenser med röda och gröna utbrott synkroniserade med 
+                "Bjällerklang," varje ögonblick är skapat för att framkalla förundran och glädje 
+                av julsäsongen.
               </p>
               <p>
-                The 30-minute show takes you on a journey from peaceful winter nights 
-                to the excitement of Christmas morning, featuring scenes of Santa's 
-                workshop, reindeer in flight, and a grand finale that celebrates the 
-                spirit of giving and togetherness.
+                Den 30-minuters långa showen tar dig på en resa från fridfulla vinternätter 
+                till spänningen av julmorgon, med scener av tomtens 
+                verkstad, renar i flykt, och en stor final som firar 
+                andan av givande och gemenskap.
               </p>
             </div>
           </Card>
@@ -133,17 +133,17 @@ const Christmas = () => {
 
         {/* Show Schedule */}
         <div className="mt-16 text-center">
-          <h2 className="text-3xl font-bold text-christmas-gold mb-8">Show Schedule</h2>
+          <h2 className="text-3xl font-bold text-christmas-gold mb-8">Show-schema</h2>
           <div className="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto">
             <Card className="bg-christmas-dark/80 backdrop-blur-sm border-christmas-gold/30 p-6">
-              <h3 className="text-xl font-bold text-christmas-gold mb-2">December 1-23</h3>
-              <p className="text-green-100">6:00 PM - 9:00 PM</p>
-              <p className="text-sm text-green-200">Shows every 30 minutes</p>
+              <h3 className="text-xl font-bold text-christmas-gold mb-2">1-23 December</h3>
+              <p className="text-green-100">18:00 - 21:00</p>
+              <p className="text-sm text-green-200">Shower var 30:e minut</p>
             </Card>
             <Card className="bg-christmas-dark/80 backdrop-blur-sm border-christmas-gold/30 p-6">
-              <h3 className="text-xl font-bold text-christmas-gold mb-2">Christmas Eve & Day</h3>
-              <p className="text-green-100">5:00 PM - 11:00 PM</p>
-              <p className="text-sm text-green-200">Continuous shows</p>
+              <h3 className="text-xl font-bold text-christmas-gold mb-2">Julafton & Juldag</h3>
+              <p className="text-green-100">17:00 - 23:00</p>
+              <p className="text-sm text-green-200">Kontinuerliga shower</p>
             </Card>
           </div>
         </div>

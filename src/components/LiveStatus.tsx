@@ -34,8 +34,8 @@ const LiveStatus = () => {
       return {
         name: "Halloween Show",
         isLive: isShowTime,
-        currentSequence: isShowTime ? getHalloweenSequence(now) : "Off Air",
-        nextShow: isShowTime ? "Next sequence in 2 minutes" : "Next show at 6:00 PM",
+        currentSequence: isShowTime ? getHalloweenSequence(now) : "Inte på luften",
+        nextShow: isShowTime ? "Nästa sekvens om 2 minuter" : "Nästa show kl 18:00",
         icon: <Ghost className="w-5 h-5" />,
         theme: "halloween"
       };
@@ -45,10 +45,10 @@ const LiveStatus = () => {
     if (month === 12 && now.getDate() <= 25) {
       const isShowTime = hour >= 17 && hour <= 23; // 5 PM to 11 PM
       return {
-        name: "Christmas Show",
+        name: "Julshow",
         isLive: isShowTime,
-        currentSequence: isShowTime ? getChristmasSequence(now) : "Off Air",
-        nextShow: isShowTime ? "Next sequence in 90 seconds" : "Next show at 5:00 PM",
+        currentSequence: isShowTime ? getChristmasSequence(now) : "Inte på luften",
+        nextShow: isShowTime ? "Nästa sekvens om 90 sekunder" : "Nästa show kl 17:00",
         icon: <TreePine className="w-5 h-5" />,
         theme: "christmas"
       };
@@ -56,10 +56,10 @@ const LiveStatus = () => {
     
     // Off season
     return {
-      name: "Light Shows",
+      name: "Ljusshower",
       isLive: false,
-      currentSequence: "Off Season",
-      nextShow: month < 10 ? "Halloween shows start in October" : "Christmas shows start December 1st",
+      currentSequence: "Inte säsong",
+      nextShow: month < 10 ? "Halloween-shower börjar i oktober" : "Julshower börjar 1 december",
       icon: <Clock className="w-5 h-5" />,
       theme: "default"
     };

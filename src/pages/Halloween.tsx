@@ -35,7 +35,7 @@ const Halloween = () => {
         <Link to="/">
           <Button variant="ghost" className="text-halloween hover:text-halloween/80 hover:bg-halloween/10">
             <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to Huset Lumos
+            Tillbaka till Huset Lumos
           </Button>
         </Link>
       </div>
@@ -45,11 +45,11 @@ const Halloween = () => {
         <div className="text-center mb-16">
           <Ghost className="w-20 h-20 mx-auto text-halloween animate-spookyFloat halloween-glow mb-6" />
           <h1 className="text-5xl md:text-7xl font-bold text-halloween mb-4">
-            Halloween Light Show
+            Halloween Ljusshow
           </h1>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            Step into a world of spine-tingling wonder where lights dance with shadows, 
-            creating an otherworldly experience that celebrates the magic of Halloween
+            Kliv in i en värld av rysskänd häpnad där ljus dansar med skuggor, 
+            och skapar en övernaturlig upplevelse som firar Halloweens magi
           </p>
         </div>
 
@@ -57,28 +57,28 @@ const Halloween = () => {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
           <Card className="bg-halloween-dark/80 backdrop-blur-sm border-halloween/30 p-6">
             <Skull className="w-12 h-12 text-halloween mb-4 animate-spookyFloat" />
-            <h3 className="text-2xl font-bold text-halloween mb-2">Haunting Projections</h3>
+            <h3 className="text-2xl font-bold text-halloween mb-2">Spöklika Projektioner</h3>
             <p className="text-gray-300">
-              Ghostly figures and eerie scenes projected onto surfaces, 
-              creating an immersive haunted atmosphere
+              Spökliknande figurer och kusliga scener projicerade på ytor, 
+              som skapar en uppslukande hemsökt atmosfär
             </p>
           </Card>
 
           <Card className="bg-halloween-dark/80 backdrop-blur-sm border-halloween/30 p-6">
             <Moon className="w-12 h-12 text-halloween-secondary mb-4 animate-spookyFloat" />
-            <h3 className="text-2xl font-bold text-halloween-secondary mb-2">Synchronized Effects</h3>
+            <h3 className="text-2xl font-bold text-halloween-secondary mb-2">Synkroniserade Effekter</h3>
             <p className="text-gray-300">
-              Perfectly timed light sequences synchronized with spooky soundtracks 
-              for maximum impact
+              Perfekt tajmade ljussekvenser synkroniserade med spöklika ljudspår 
+              för maximal effekt
             </p>
           </Card>
 
           <Card className="bg-halloween-dark/80 backdrop-blur-sm border-halloween/30 p-6">
             <Zap className="w-12 h-12 text-halloween-accent mb-4 animate-spookyFloat" />
-            <h3 className="text-2xl font-bold text-halloween-accent mb-2">Interactive Elements</h3>
+            <h3 className="text-2xl font-bold text-halloween-accent mb-2">Interaktiva Element</h3>
             <p className="text-gray-300">
-              Motion-activated displays that respond to visitors, 
-              creating personalized frightening experiences
+              Rörelsekänsliga displayer som reagerar på besökare, 
+              och skapar personliga skrämmande upplevelser
             </p>
           </Card>
         </div>
@@ -86,23 +86,23 @@ const Halloween = () => {
         {/* Show Details */}
         <div className="max-w-4xl mx-auto">
           <Card className="bg-halloween-dark/80 backdrop-blur-sm border-halloween/30 p-8">
-            <h2 className="text-3xl font-bold text-halloween mb-6">The Experience</h2>
+            <h2 className="text-3xl font-bold text-halloween mb-6">Upplevelsen</h2>
             <div className="space-y-4 text-gray-300">
               <p>
-                Our Halloween light show transforms your evening into a thrilling journey through a 
-                haunted wonderland. Using cutting-edge LED technology and custom programming, we create 
-                dynamic displays that tell spooky stories through light and shadow.
+                Vår Halloween-ljusshow förvandlar din kväll till en spännande resa genom ett 
+                hemsökt underland. Med hjälp av banbrytande LED-teknik och anpassad programmering skapar vi 
+                dynamiska displayer som berättar spöklika historier genom ljus och skugga.
               </p>
               <p>
-                From creeping fog effects illuminated by eerie green glows to sudden bursts of 
-                orange lightning that reveal ghoulish silhouettes, every element is designed to 
-                deliver chills and thrills while maintaining the festive spirit of Halloween.
+                Från krypande dimeffekter upplysta av kusliga gröna glöd till plötsliga utbrott av 
+                orange blixtar som avslöjar spöklika silhuetter, varje element är utformat för att 
+                leverera rysningar och spänning samtidigt som det bevarar Halloweens festliga anda.
               </p>
               <p>
-                The 25-minute show features multiple acts, each with its own theme - from a 
-                graveyard scene complete with rising spirits to a witch's cauldron brewing with 
-                magical lights. The finale brings all elements together in a spectacular 
-                crescendo of color and movement.
+                Den 25-minuter långa showen innehåller flera akter, var och en med sitt eget tema - från en 
+                kyrkogårdsscen komplett med uppstående andar till en häxas kittel som kokar med 
+                magiska ljus. Finalen för samman alla element i ett spektakulärt 
+                crescendo av färg och rörelse.
               </p>
             </div>
           </Card>
@@ -110,17 +110,17 @@ const Halloween = () => {
 
         {/* Show Schedule */}
         <div className="mt-16 text-center">
-          <h2 className="text-3xl font-bold text-halloween mb-8">Show Schedule</h2>
+          <h2 className="text-3xl font-bold text-halloween mb-8">Show-schema</h2>
           <div className="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto">
             <Card className="bg-halloween-dark/80 backdrop-blur-sm border-halloween/30 p-6">
-              <h3 className="text-xl font-bold text-halloween mb-2">Weekdays</h3>
-              <p className="text-gray-300">7:00 PM - 9:00 PM</p>
-              <p className="text-sm text-gray-400">Shows every 30 minutes</p>
+              <h3 className="text-xl font-bold text-halloween mb-2">Vardagar</h3>
+              <p className="text-gray-300">19:00 - 21:00</p>
+              <p className="text-sm text-gray-400">Shower var 30:e minut</p>
             </Card>
             <Card className="bg-halloween-dark/80 backdrop-blur-sm border-halloween/30 p-6">
-              <h3 className="text-xl font-bold text-halloween mb-2">Weekends</h3>
-              <p className="text-gray-300">6:00 PM - 10:00 PM</p>
-              <p className="text-sm text-gray-400">Shows every 25 minutes</p>
+              <h3 className="text-xl font-bold text-halloween mb-2">Helger</h3>
+              <p className="text-gray-300">18:00 - 22:00</p>
+              <p className="text-sm text-gray-400">Shower var 25:e minut</p>
             </Card>
           </div>
         </div>

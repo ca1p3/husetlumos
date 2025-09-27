@@ -41,7 +41,7 @@ const Index = () => {
             </h1>
           </div>
           <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl">
-            Immersive light shows that transform Halloween and Christmas into magical experiences
+            Fantastiska ljusshower som förvandlar Halloween och jul till magiska upplevelser
           </p>
         </div>
 
@@ -60,11 +60,11 @@ const Index = () => {
                   <Ghost className="w-16 h-16 mx-auto text-halloween animate-spookyFloat halloween-glow" />
                   <h2 className="text-3xl font-bold text-halloween">Halloween Show</h2>
                   <p className="text-muted-foreground min-h-[3rem] flex items-center justify-center">
-                    Spine-chilling lights, eerie animations, and haunting displays that bring the spirit of Halloween to life
+                    Spöklika ljus, kusliga animationer och hemsökta uppvisningar som för Halloween-andan till liv
                   </p>
                 </div>
                 <Button variant="outline" className="sparkle border-halloween text-halloween hover:bg-halloween hover:text-halloween-dark">
-                  Enter the Haunted Experience
+                  Gå in i den hemsökta upplevelsen
                 </Button>
               </div>
             </Card>
@@ -76,13 +76,13 @@ const Index = () => {
               <div className="text-center space-y-4 flex flex-col justify-between min-h-[320px]">
                 <div className="space-y-4">
                   <TreePine className="w-16 h-16 mx-auto text-christmas animate-gentle-glow christmas-glow" />
-                  <h2 className="text-3xl font-bold text-christmas">Christmas Show</h2>
+                  <h2 className="text-3xl font-bold text-christmas">Julshow</h2>
                   <p className="text-muted-foreground min-h-[3rem] flex items-center justify-center">
-                    Magical winter wonderland with twinkling lights, festive music, and heartwarming holiday spirit
+                    Magiskt vinterlandskap med glittrande ljus, festlig musik och hjärtvärmande julstämning
                   </p>
                 </div>
                 <Button variant="outline" className="sparkle border-christmas text-christmas hover:bg-christmas hover:text-foreground">
-                  Discover the Magic
+                  Upptäck magin
                 </Button>
               </div>
             </Card>
@@ -92,7 +92,7 @@ const Index = () => {
         {/* Footer Info */}
         <div className="mt-16 text-center">
           <p className="text-muted-foreground">
-            Creating unforgettable moments through the art of light
+            Skapar oförglömliga stunder genom ljusets konst
           </p>
         </div>
       </div>
