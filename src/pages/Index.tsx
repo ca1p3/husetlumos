@@ -54,13 +54,15 @@ const Index = () => {
         <div className="grid md:grid-cols-2 gap-8 max-w-4xl w-full">
           {/* Halloween Card */}
           <Link to="/halloween" className="group">
-            <Card className="theme-card p-8 bg-card/50 backdrop-blur-sm border-2 border-halloween/30 hover:border-halloween/60">
-              <div className="text-center space-y-4">
-                <Ghost className="w-16 h-16 mx-auto text-halloween animate-spookyFloat halloween-glow" />
-                <h2 className="text-3xl font-bold text-halloween">Halloween Show</h2>
-                <p className="text-muted-foreground">
-                  Spine-chilling lights, eerie animations, and haunting displays that bring the spirit of Halloween to life
-                </p>
+            <Card className="theme-card p-8 bg-card/50 backdrop-blur-sm border-2 border-halloween/30 hover:border-halloween/60 h-full">
+              <div className="text-center space-y-4 flex flex-col justify-between min-h-[320px]">
+                <div className="space-y-4">
+                  <Ghost className="w-16 h-16 mx-auto text-halloween animate-spookyFloat halloween-glow" />
+                  <h2 className="text-3xl font-bold text-halloween">Halloween Show</h2>
+                  <p className="text-muted-foreground min-h-[3rem] flex items-center justify-center">
+                    Spine-chilling lights, eerie animations, and haunting displays that bring the spirit of Halloween to life
+                  </p>
+                </div>
                 <Button variant="outline" className="sparkle border-halloween text-halloween hover:bg-halloween hover:text-halloween-dark">
                   Enter the Haunted Experience
                 </Button>
@@ -70,13 +72,15 @@ const Index = () => {
 
           {/* Christmas Card */}
           <Link to="/christmas" className="group">
-            <Card className="theme-card p-8 bg-card/50 backdrop-blur-sm border-2 border-christmas/30 hover:border-christmas/60">
-              <div className="text-center space-y-4">
-                <TreePine className="w-16 h-16 mx-auto text-christmas animate-gentle-glow christmas-glow" />
-                <h2 className="text-3xl font-bold text-christmas">Christmas Show</h2>
-                <p className="text-muted-foreground">
-                  Magical winter wonderland with twinkling lights, festive music, and heartwarming holiday spirit
-                </p>
+            <Card className="theme-card p-8 bg-card/50 backdrop-blur-sm border-2 border-christmas/30 hover:border-christmas/60 h-full">
+              <div className="text-center space-y-4 flex flex-col justify-between min-h-[320px]">
+                <div className="space-y-4">
+                  <TreePine className="w-16 h-16 mx-auto text-christmas animate-gentle-glow christmas-glow" />
+                  <h2 className="text-3xl font-bold text-christmas">Christmas Show</h2>
+                  <p className="text-muted-foreground min-h-[3rem] flex items-center justify-center">
+                    Magical winter wonderland with twinkling lights, festive music, and heartwarming holiday spirit
+                  </p>
+                </div>
                 <Button variant="outline" className="sparkle border-christmas text-christmas hover:bg-christmas hover:text-foreground">
                   Discover the Magic
                 </Button>
