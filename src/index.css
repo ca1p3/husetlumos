@@ -195,6 +195,21 @@
     min-height: 100vh;
   }
 
+  /* Remove square boxes around icons */
+  svg {
+    outline: none;
+    background: none;
+    border: none;
+  }
+
+  /* Remove focus outlines from interactive elements with icons */
+  button:focus svg,
+  a:focus svg,
+  [role="button"]:focus svg {
+    outline: none;
+    box-shadow: none;
+  }
+
   @keyframes float {
     0%, 100% { transform: translateY(0px) rotate(0deg); }
     33% { transform: translateY(-20px) rotate(120deg); }
