@@ -79,9 +79,43 @@ const LiveStatus = () => {
     return () => clearInterval(statusInterval);
   }, []);
 
+  const getNextShowTime = (now: Date, month: number, hour: number): string => {
+    // Halloween season: October
+    if (month === 10) {
+      if (hour < 18) {
+        return `Nästa show börjar idag kl 18:00`;
+      } else if (hour >= 22) {
+        return `Nästa show börjar imorgon kl 18:00`;
+      } else {
+        return `Show pågår till 22:00`;
+      }
+    }
+    
+    // Christmas season: December 1-25
+    if (month === 12 && now.getDate() <= 25) {
+      if (hour < 17) {
+        return `Nästa show börjar idag kl 17:00`;
+      } else if (hour >= 23) {
+        return `Nästa show börjar imorgon kl 17:00`;
+      } else {
+        return `Show pågår till 23:00`;
+      }
+    }
+    
+    // Off season
+    if (month < 10) {
+      return `Nästa show börjar i oktober`;
+    } else if (month === 11) {
+      return `Nästa show börjar 1 december`;
+    } else {
+      return `Nästa show börjar nästa oktober`;
+    }
+  };
+
   const getShowStatus = (): ShowInfo => {
     const now = new Date();
     const month = now.getMonth() + 1;
+    const hour = now.getHours();
     
     // If connected to FPP and playing
     if (isConnected && fppStatus && fppStatus.status === 1) {
@@ -118,19 +152,15 @@ const LiveStatus = () => {
       };
     }
 
-    // Fallback to time-based status when not connected or not playing
-    const hour = now.getHours();
+    // Fallback to schedule-based status when not connected or not playing
     
     // Halloween season: October
     if (month === 10) {
-      const isShowTime = hour >= 18 && hour <= 22;
       return {
         name: "Halloween Show",
         isLive: false,
-        currentSequence: isConnected ? 
-          (fppStatus?.status_name || "Redo att starta") : 
-          "Kontrollant ej ansluten",
-        nextShow: isShowTime ? "Klart för show" : "Showperiod 18:00-22:00",
+        currentSequence: "Redo för show",
+        nextShow: getNextShowTime(now, month, hour),
         icon: <Ghost className="w-5 h-5" />,
         theme: "halloween",
         isConnected
@@ -139,14 +169,11 @@ const LiveStatus = () => {
     
     // Christmas season: December 1-25
     if (month === 12 && now.getDate() <= 25) {
-      const isShowTime = hour >= 17 && hour <= 23;
       return {
         name: "Julshow",
         isLive: false,
-        currentSequence: isConnected ? 
-          (fppStatus?.status_name || "Redo att starta") : 
-          "Kontrollant ej ansluten",
-        nextShow: isShowTime ? "Klart för show" : "Showperiod 17:00-23:00",
+        currentSequence: "Redo för show",
+        nextShow: getNextShowTime(now, month, hour),
         icon: <TreePine className="w-5 h-5" />,
         theme: "christmas",
         isConnected
@@ -157,10 +184,8 @@ const LiveStatus = () => {
     return {
       name: "Ljusshower",
       isLive: false,
-      currentSequence: isConnected ? 
-        (fppStatus?.status_name || "Viloläge") : 
-        "Kontrollant ej ansluten",
-      nextShow: month < 10 ? "Halloween börjar i oktober" : "Julshower börjar 1 december",
+      currentSequence: "Säsongsviloläge",
+      nextShow: getNextShowTime(now, month, hour),
       icon: <Clock className="w-5 h-5" />,
       theme: "default",
       isConnected
@@ -218,7 +243,7 @@ const LiveStatus = () => {
               {showInfo.isConnected ? (
                 <><Wifi className="w-3 h-3" /> Ansluten</>
               ) : (
-                <><WifiOff className="w-3 h-3" /> Frånkopplad</>
+                <><WifiOff className="w-3 h-3" /> Offline</>
               )}
             </div>
             <div className="text-xs text-muted-foreground">
@@ -252,17 +277,10 @@ const LiveStatus = () => {
             </div>
           )}
 
-          {/* Connection Status */}
-          {!showInfo.isConnected && (
-            <div className="flex items-center gap-1 text-xs text-orange-500">
-              <AlertCircle className="w-3 h-3" />
-              Försöker ansluta till FPP kontrollant ({FPP_CONTROLLER_IP})
-            </div>
-          )}
-          
-          {showInfo.isConnected && connectionAge > 0 && (
+          {/* Show schedule info when offline for too long */}
+          {!showInfo.isConnected && connectionAge > 30 && (
             <div className="text-xs text-muted-foreground opacity-75">
-              Senaste uppdatering: {connectionAge}s sedan
+              Visar schemalagd information
             </div>
           )}
         </div>
