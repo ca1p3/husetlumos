@@ -1,35 +1,7 @@
 import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
-import { Ghost, TreePine, Play, Clock, Wifi, WifiOff, AlertCircle, Calendar } from "lucide-react";
-
-interface FPPStatus {
-  current_playlist?: {
-    playlist?: string;
-    type?: string;
-    index?: number;
-  };
-  current_song?: string;
-  seconds_played?: number;
-  seconds_remaining?: number;
-  status?: number;
-  status_name?: string;
-}
-
-interface FPPSchedule {
-  enabled?: number;
-  nextPlaylist?: {
-    playlistName?: string;
-    scheduledStartTime?: number;
-    scheduledEndTime?: number;
-  };
-  currentPlaylist?: {
-    playlistName?: string;
-    scheduledStartTime?: number;
-    scheduledEndTime?: number;
-  };
-}
+import { Ghost, TreePine, Play, Clock } from "lucide-react";
 
 interface ShowInfo {
   name: string;
@@ -38,93 +10,12 @@ interface ShowInfo {
   nextShow: string;
   icon: React.ReactNode;
   theme: string;
-  progress?: number;
-  isConnected: boolean;
-  scheduledNext?: string;
 }
-
-const FPP_CONTROLLER_IP = "192.168.1.166";
 
 const LiveStatus = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
-  const [fppStatus, setFppStatus] = useState<FPPStatus | null>(null);
-  const [fppSchedule, setFppSchedule] = useState<FPPSchedule | null>(null);
-  const [isConnected, setIsConnected] = useState(false);
-  const [lastFetch, setLastFetch] = useState<number>(0);
   
-  // Fetch FPP status and schedule
-  const fetchFPPData = async () => {
-    try {
-      // Try both HTTP and HTTPS to handle different configurations
-      const tryFetch = async (url: string) => {
-        const response = await fetch(url, {
-          method: 'GET',
-          headers: {
-            'Accept': 'application/json',
-          },
-          mode: 'cors', // Explicitly set CORS mode
-        });
-        return response;
-      };
-
-      // Try status endpoint
-      let statusData = null;
-      try {
-        const statusResponse = await tryFetch(`http://${FPP_CONTROLLER_IP}/api/fppd/status`);
-        if (statusResponse.ok) {
-          statusData = await statusResponse.json();
-        }
-      } catch (error) {
-        // Try HTTPS if HTTP fails
-        try {
-          const statusResponse = await tryFetch(`https://${FPP_CONTROLLER_IP}/api/fppd/status`);
-          if (statusResponse.ok) {
-            statusData = await statusResponse.json();
-          }
-        } catch (httpsError) {
-          console.warn('Both HTTP and HTTPS failed for status');
-        }
-      }
-
-      // Try schedule endpoint
-      let scheduleData = null;
-      try {
-        const scheduleResponse = await tryFetch(`http://${FPP_CONTROLLER_IP}/api/schedule`);
-        if (scheduleResponse.ok) {
-          scheduleData = await scheduleResponse.json();
-        }
-      } catch (error) {
-        // Try alternative schedule endpoints
-        try {
-          const scheduleResponse = await tryFetch(`http://${FPP_CONTROLLER_IP}/api/scheduler`);
-          if (scheduleResponse.ok) {
-            scheduleData = await scheduleResponse.json();
-          }
-        } catch (altError) {
-          console.warn('Schedule endpoint not accessible');
-        }
-      }
-
-      if (statusData) {
-        setFppStatus(statusData);
-        setIsConnected(true);
-        setLastFetch(Date.now());
-      } else {
-        setIsConnected(false);
-      }
-
-      if (scheduleData) {
-        setFppSchedule(scheduleData);
-      }
-
-    } catch (error) {
-      console.error('Failed to fetch FPP data:', error);
-      setIsConnected(false);
-    }
-  };
-
   useEffect(() => {
-    // Update current time every second
     const timer = setInterval(() => {
       setCurrentTime(new Date());
     }, 1000);
@@ -132,144 +23,34 @@ const LiveStatus = () => {
     return () => clearInterval(timer);
   }, []);
 
-  useEffect(() => {
-    // Initial fetch
-    fetchFPPData();
-    
-    // Fetch FPP data every 5 seconds
-    const dataInterval = setInterval(fetchFPPData, 5000);
-    
-    return () => clearInterval(dataInterval);
-  }, []);
-
-  const formatScheduleTime = (timestamp?: number): string => {
-    if (!timestamp) return "";
-    const date = new Date(timestamp * 1000);
-    const now = new Date();
-    const isToday = date.toDateString() === now.toDateString();
-    const isTomorrow = date.toDateString() === new Date(now.getTime() + 86400000).toDateString();
-    
-    if (isToday) {
-      return `idag kl ${date.toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit' })}`;
-    } else if (isTomorrow) {
-      return `imorgon kl ${date.toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit' })}`;
-    } else {
-      return `${date.toLocaleDateString('sv-SE')} kl ${date.toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit' })}`;
-    }
-  };
-
-  const getNextShowTime = (now: Date, month: number, hour: number): string => {
-    // Check if we have schedule data from FPP
-    if (fppSchedule?.nextPlaylist) {
-      const nextShow = formatScheduleTime(fppSchedule.nextPlaylist.scheduledStartTime);
-      const playlistName = fppSchedule.nextPlaylist.playlistName;
-      return nextShow ? `Nästa show: ${playlistName} ${nextShow}` : `Nästa show: ${playlistName}`;
-    }
-
-    // Fallback to time-based schedule
-    if (month === 10) {
-      if (hour < 18) {
-        return `Nästa show börjar idag kl 18:00`;
-      } else if (hour >= 22) {
-        return `Nästa show börjar imorgon kl 18:00`;
-      } else {
-        return `Show pågår till 22:00`;
-      }
-    }
-    
-    if (month === 12 && now.getDate() <= 25) {
-      if (hour < 17) {
-        return `Nästa show börjar idag kl 17:00`;
-      } else if (hour >= 23) {
-        return `Nästa show börjar imorgon kl 17:00`;
-      } else {
-        return `Show pågår till 23:00`;
-      }
-    }
-    
-    if (month < 10) {
-      return `Nästa show börjar i oktober`;
-    } else if (month === 11) {
-      return `Nästa show börjar 1 december`;
-    } else {
-      return `Nästa show börjar nästa oktober`;
-    }
-  };
-
   const getShowStatus = (): ShowInfo => {
     const now = new Date();
-    const month = now.getMonth() + 1;
+    const month = now.getMonth() + 1; // 0-based to 1-based
     const hour = now.getHours();
-    
-    // If connected to FPP and playing
-    if (isConnected && fppStatus && fppStatus.status === 1) {
-      const currentSequence = fppStatus.current_song || "Okänd sekvens";
-      const playlist = fppStatus.current_playlist?.playlist || "Okänd spellista";
-      const progress = fppStatus.seconds_played && fppStatus.seconds_remaining 
-        ? (fppStatus.seconds_played / (fppStatus.seconds_played + fppStatus.seconds_remaining)) * 100
-        : 0;
-      
-      // Determine theme based on current time/season
-      let theme = "default";
-      let icon = <Play className="w-5 h-5" />;
-      let showName = "Ljusshow";
-      
-      if (month === 10) {
-        theme = "halloween";
-        icon = <Ghost className="w-5 h-5" />;
-        showName = "Halloween Show";
-      } else if (month === 12 && now.getDate() <= 25) {
-        theme = "christmas";
-        icon = <TreePine className="w-5 h-5" />;
-        showName = "Julshow";
-      }
-
-      // Check if we have schedule info for next show
-      let nextShowInfo = `Spellista: ${playlist}`;
-      if (fppSchedule?.nextPlaylist) {
-        const nextTime = formatScheduleTime(fppSchedule.nextPlaylist.scheduledStartTime);
-        if (nextTime) {
-          nextShowInfo = `Nästa: ${fppSchedule.nextPlaylist.playlistName} ${nextTime}`;
-        }
-      }
-      
-      return {
-        name: showName,
-        isLive: true,
-        currentSequence,
-        nextShow: nextShowInfo,
-        icon,
-        theme,
-        progress,
-        isConnected: true
-      };
-    }
-
-    // Fallback to schedule-based status when not connected or not playing
     
     // Halloween season: October
     if (month === 10) {
+      const isShowTime = hour >= 18 && hour <= 22; // 6 PM to 10 PM
       return {
         name: "Halloween Show",
-        isLive: false,
-        currentSequence: fppSchedule?.enabled ? "Schemalagd show" : "Redo för show",
-        nextShow: getNextShowTime(now, month, hour),
+        isLive: isShowTime,
+        currentSequence: isShowTime ? getHalloweenSequence(now) : "Inte på luften",
+        nextShow: isShowTime ? "Nästa sekvens om 2 minuter" : "Nästa show kl 18:00",
         icon: <Ghost className="w-5 h-5" />,
-        theme: "halloween",
-        isConnected
+        theme: "halloween"
       };
     }
     
     // Christmas season: December 1-25
     if (month === 12 && now.getDate() <= 25) {
+      const isShowTime = hour >= 17 && hour <= 23; // 5 PM to 11 PM
       return {
         name: "Julshow",
-        isLive: false,
-        currentSequence: fppSchedule?.enabled ? "Schemalagd show" : "Redo för show",
-        nextShow: getNextShowTime(now, month, hour),
+        isLive: isShowTime,
+        currentSequence: isShowTime ? getChristmasSequence(now) : "Inte på luften",
+        nextShow: isShowTime ? "Nästa sekvens om 90 sekunder" : "Nästa show kl 17:00",
         icon: <TreePine className="w-5 h-5" />,
-        theme: "christmas",
-        isConnected
+        theme: "christmas"
       };
     }
     
@@ -277,16 +58,43 @@ const LiveStatus = () => {
     return {
       name: "Ljusshower",
       isLive: false,
-      currentSequence: fppSchedule?.enabled ? "Schemalagd viloläge" : "Säsongsviloläge",
-      nextShow: getNextShowTime(now, month, hour),
+      currentSequence: "Inte säsong",
+      nextShow: month < 10 ? "Halloween-shower börjar i oktober" : "Julshower börjar 1 december",
       icon: <Clock className="w-5 h-5" />,
-      theme: "default",
-      isConnected
+      theme: "default"
     };
   };
 
+  const getHalloweenSequence = (time: Date): string => {
+    const sequences = [
+      "Thriller - Michael Jackson",
+      "Ghostbusters Theme",
+      "Monster Mash",
+      "This is Halloween",
+      "Somebody's Watching Me",
+      "Time Warp"
+    ];
+    
+    const index = Math.floor((time.getMinutes() + time.getSeconds() / 60) / 10) % sequences.length;
+    return sequences[index];
+  };
+
+  const getChristmasSequence = (time: Date): string => {
+    const sequences = [
+      "Jingle Bells - Traditional",
+      "Carol of the Bells",
+      "The Christmas Song",
+      "Silent Night",
+      "Deck the Halls",
+      "White Christmas",
+      "Feliz Navidad"
+    ];
+    
+    const index = Math.floor((time.getMinutes() + time.getSeconds() / 60) / 7) % sequences.length;
+    return sequences[index];
+  };
+
   const showInfo = getShowStatus();
-  const connectionAge = lastFetch ? Math.floor((Date.now() - lastFetch) / 1000) : 0;
 
   return (
     <Card className={`p-4 bg-card/80 backdrop-blur-sm border-2 ${
@@ -294,98 +102,49 @@ const LiveStatus = () => {
       showInfo.theme === 'christmas' ? 'border-christmas/30' :
       'border-border'
     }`}>
-      <div className="space-y-3">
-        {/* Header Row */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className={`${
-              showInfo.theme === 'halloween' ? 'text-halloween' :
-              showInfo.theme === 'christmas' ? 'text-christmas' :
-              'text-muted-foreground'
-            }`}>
-              {showInfo.icon}
-            </div>
-            
-            <div>
-              <div className="flex items-center gap-2 mb-1">
-                <h3 className="font-semibold text-sm">{showInfo.name}</h3>
-                <Badge 
-                  variant={showInfo.isLive ? "default" : "secondary"}
-                  className={`text-xs ${
-                    showInfo.isLive 
-                      ? showInfo.theme === 'halloween' 
-                        ? 'bg-halloween text-halloween-dark' 
-                        : showInfo.theme === 'christmas'
-                          ? 'bg-christmas text-white'
-                          : 'bg-primary text-primary-foreground'
-                      : ''
-                  }`}
-                >
-                  {showInfo.isLive ? (
-                    <><Play className="w-3 h-3 mr-1" /> LIVE</>
-                  ) : (
-                    fppSchedule?.enabled ? <><Calendar className="w-3 h-3 mr-1" /> SCHEMALAGD</> : 'STANDBY'
-                  )}
-                </Badge>
-              </div>
-            </div>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className={`${
+            showInfo.theme === 'halloween' ? 'text-halloween' :
+            showInfo.theme === 'christmas' ? 'text-christmas' :
+            'text-muted-foreground'
+          }`}>
+            {showInfo.icon}
           </div>
           
-          <div className="text-right">
-            <div className="flex items-center gap-1 text-xs text-muted-foreground mb-1">
-              {showInfo.isConnected ? (
-                <><Wifi className="w-3 h-3" /> Ansluten</>
-              ) : (
-                <><WifiOff className="w-3 h-3" /> Offline</>
-              )}
+          <div>
+            <div className="flex items-center gap-2 mb-1">
+              <h3 className="font-semibold text-sm">{showInfo.name}</h3>
+              <Badge 
+                variant={showInfo.isLive ? "default" : "secondary"}
+                className={`text-xs ${
+                  showInfo.isLive 
+                    ? showInfo.theme === 'halloween' 
+                      ? 'bg-halloween text-halloween-dark' 
+                      : showInfo.theme === 'christmas'
+                        ? 'bg-christmas text-white'
+                        : 'bg-primary text-primary-foreground'
+                    : ''
+                }`}
+              >
+                {showInfo.isLive ? (
+                  <><Play className="w-3 h-3 mr-1" /> LIVE</>
+                ) : (
+                  'OFFLINE'
+                )}
+              </Badge>
             </div>
+            
             <div className="text-xs text-muted-foreground">
-              {currentTime.toLocaleTimeString()}
+              <div className="font-medium">{showInfo.currentSequence}</div>
+              <div className="text-xs opacity-75">{showInfo.nextShow}</div>
             </div>
           </div>
         </div>
-
-        {/* Content Row */}
-        <div className="space-y-2">
-          <div className="text-xs">
-            <div className="font-medium text-foreground">{showInfo.currentSequence}</div>
-            <div className="text-muted-foreground">{showInfo.nextShow}</div>
-          </div>
-
-          {/* Progress Bar */}
-          {showInfo.progress !== undefined && showInfo.progress > 0 && (
-            <div className="space-y-1">
-              <Progress 
-                value={showInfo.progress} 
-                className="h-2"
-              />
-              <div className="flex justify-between text-xs text-muted-foreground">
-                <span>
-                  {fppStatus?.seconds_played ? `${Math.floor(fppStatus.seconds_played / 60)}:${(fppStatus.seconds_played % 60).toString().padStart(2, '0')}` : '0:00'}
-                </span>
-                <span>
-                  {fppStatus?.seconds_remaining ? `${Math.floor(fppStatus.seconds_remaining / 60)}:${(fppStatus.seconds_remaining % 60).toString().padStart(2, '0')} kvar` : ''}
-                </span>
-              </div>
-            </div>
-          )}
-
-          {/* Show schedule info when offline but emphasize schedule data */}
-          {!showInfo.isConnected && connectionAge > 30 && (
-            <div className="text-xs text-muted-foreground opacity-75">
-              {fppSchedule?.enabled ? 
-                'Visar schemalagd information från FPP' : 
-                'FPP ej ansluten - visar standard schema'}
-            </div>
-          )}
-          
-          {/* Connection warning for CORS issues */}
-          {!showInfo.isConnected && connectionAge > 60 && (
-            <div className="flex items-center gap-1 text-xs text-orange-500">
-              <AlertCircle className="w-3 h-3" />
-              Tips: Kontrollera CORS-inställningar på FPP för {FPP_CONTROLLER_IP}
-            </div>
-          )}
+        
+        <div className="text-right text-xs text-muted-foreground">
+          <div>{currentTime.toLocaleTimeString()}</div>
+          <div>{currentTime.toLocaleDateString()}</div>
         </div>
       </div>
     </Card>
