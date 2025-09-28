@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { Ghost, TreePine, Play, Clock, Wifi, WifiOff, AlertCircle } from "lucide-react";
+import { Ghost, TreePine, Play, Clock, Wifi, WifiOff, AlertCircle, Calendar } from "lucide-react";
 
 interface FPPStatus {
   current_playlist?: {
@@ -17,6 +17,20 @@ interface FPPStatus {
   status_name?: string;
 }
 
+interface FPPSchedule {
+  enabled?: number;
+  nextPlaylist?: {
+    playlistName?: string;
+    scheduledStartTime?: number;
+    scheduledEndTime?: number;
+  };
+  currentPlaylist?: {
+    playlistName?: string;
+    scheduledStartTime?: number;
+    scheduledEndTime?: number;
+  };
+}
+
 interface ShowInfo {
   name: string;
   isLive: boolean;
@@ -26,6 +40,7 @@ interface ShowInfo {
   theme: string;
   progress?: number;
   isConnected: boolean;
+  scheduledNext?: string;
 }
 
 const FPP_CONTROLLER_IP = "192.168.1.166";
@@ -33,29 +48,77 @@ const FPP_CONTROLLER_IP = "192.168.1.166";
 const LiveStatus = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [fppStatus, setFppStatus] = useState<FPPStatus | null>(null);
+  const [fppSchedule, setFppSchedule] = useState<FPPSchedule | null>(null);
   const [isConnected, setIsConnected] = useState(false);
   const [lastFetch, setLastFetch] = useState<number>(0);
   
-  // Fetch FPP status
-  const fetchFPPStatus = async () => {
+  // Fetch FPP status and schedule
+  const fetchFPPData = async () => {
     try {
-      const response = await fetch(`http://${FPP_CONTROLLER_IP}/api/fppd/status`, {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/json',
-        },
-      });
-      
-      if (response.ok) {
-        const data = await response.json();
-        setFppStatus(data);
+      // Try both HTTP and HTTPS to handle different configurations
+      const tryFetch = async (url: string) => {
+        const response = await fetch(url, {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+          },
+          mode: 'cors', // Explicitly set CORS mode
+        });
+        return response;
+      };
+
+      // Try status endpoint
+      let statusData = null;
+      try {
+        const statusResponse = await tryFetch(`http://${FPP_CONTROLLER_IP}/api/fppd/status`);
+        if (statusResponse.ok) {
+          statusData = await statusResponse.json();
+        }
+      } catch (error) {
+        // Try HTTPS if HTTP fails
+        try {
+          const statusResponse = await tryFetch(`https://${FPP_CONTROLLER_IP}/api/fppd/status`);
+          if (statusResponse.ok) {
+            statusData = await statusResponse.json();
+          }
+        } catch (httpsError) {
+          console.warn('Both HTTP and HTTPS failed for status');
+        }
+      }
+
+      // Try schedule endpoint
+      let scheduleData = null;
+      try {
+        const scheduleResponse = await tryFetch(`http://${FPP_CONTROLLER_IP}/api/schedule`);
+        if (scheduleResponse.ok) {
+          scheduleData = await scheduleResponse.json();
+        }
+      } catch (error) {
+        // Try alternative schedule endpoints
+        try {
+          const scheduleResponse = await tryFetch(`http://${FPP_CONTROLLER_IP}/api/scheduler`);
+          if (scheduleResponse.ok) {
+            scheduleData = await scheduleResponse.json();
+          }
+        } catch (altError) {
+          console.warn('Schedule endpoint not accessible');
+        }
+      }
+
+      if (statusData) {
+        setFppStatus(statusData);
         setIsConnected(true);
         setLastFetch(Date.now());
       } else {
         setIsConnected(false);
       }
+
+      if (scheduleData) {
+        setFppSchedule(scheduleData);
+      }
+
     } catch (error) {
-      console.error('Failed to fetch FPP status:', error);
+      console.error('Failed to fetch FPP data:', error);
       setIsConnected(false);
     }
   };
@@ -71,16 +134,39 @@ const LiveStatus = () => {
 
   useEffect(() => {
     // Initial fetch
-    fetchFPPStatus();
+    fetchFPPData();
     
-    // Fetch FPP status every 5 seconds
-    const statusInterval = setInterval(fetchFPPStatus, 5000);
+    // Fetch FPP data every 5 seconds
+    const dataInterval = setInterval(fetchFPPData, 5000);
     
-    return () => clearInterval(statusInterval);
+    return () => clearInterval(dataInterval);
   }, []);
 
+  const formatScheduleTime = (timestamp?: number): string => {
+    if (!timestamp) return "";
+    const date = new Date(timestamp * 1000);
+    const now = new Date();
+    const isToday = date.toDateString() === now.toDateString();
+    const isTomorrow = date.toDateString() === new Date(now.getTime() + 86400000).toDateString();
+    
+    if (isToday) {
+      return `idag kl ${date.toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit' })}`;
+    } else if (isTomorrow) {
+      return `imorgon kl ${date.toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit' })}`;
+    } else {
+      return `${date.toLocaleDateString('sv-SE')} kl ${date.toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit' })}`;
+    }
+  };
+
   const getNextShowTime = (now: Date, month: number, hour: number): string => {
-    // Halloween season: October
+    // Check if we have schedule data from FPP
+    if (fppSchedule?.nextPlaylist) {
+      const nextShow = formatScheduleTime(fppSchedule.nextPlaylist.scheduledStartTime);
+      const playlistName = fppSchedule.nextPlaylist.playlistName;
+      return nextShow ? `Nästa show: ${playlistName} ${nextShow}` : `Nästa show: ${playlistName}`;
+    }
+
+    // Fallback to time-based schedule
     if (month === 10) {
       if (hour < 18) {
         return `Nästa show börjar idag kl 18:00`;
@@ -91,7 +177,6 @@ const LiveStatus = () => {
       }
     }
     
-    // Christmas season: December 1-25
     if (month === 12 && now.getDate() <= 25) {
       if (hour < 17) {
         return `Nästa show börjar idag kl 17:00`;
@@ -102,7 +187,6 @@ const LiveStatus = () => {
       }
     }
     
-    // Off season
     if (month < 10) {
       return `Nästa show börjar i oktober`;
     } else if (month === 11) {
@@ -139,12 +223,21 @@ const LiveStatus = () => {
         icon = <TreePine className="w-5 h-5" />;
         showName = "Julshow";
       }
+
+      // Check if we have schedule info for next show
+      let nextShowInfo = `Spellista: ${playlist}`;
+      if (fppSchedule?.nextPlaylist) {
+        const nextTime = formatScheduleTime(fppSchedule.nextPlaylist.scheduledStartTime);
+        if (nextTime) {
+          nextShowInfo = `Nästa: ${fppSchedule.nextPlaylist.playlistName} ${nextTime}`;
+        }
+      }
       
       return {
         name: showName,
         isLive: true,
         currentSequence,
-        nextShow: `Spellista: ${playlist}`,
+        nextShow: nextShowInfo,
         icon,
         theme,
         progress,
@@ -159,7 +252,7 @@ const LiveStatus = () => {
       return {
         name: "Halloween Show",
         isLive: false,
-        currentSequence: "Redo för show",
+        currentSequence: fppSchedule?.enabled ? "Schemalagd show" : "Redo för show",
         nextShow: getNextShowTime(now, month, hour),
         icon: <Ghost className="w-5 h-5" />,
         theme: "halloween",
@@ -172,7 +265,7 @@ const LiveStatus = () => {
       return {
         name: "Julshow",
         isLive: false,
-        currentSequence: "Redo för show",
+        currentSequence: fppSchedule?.enabled ? "Schemalagd show" : "Redo för show",
         nextShow: getNextShowTime(now, month, hour),
         icon: <TreePine className="w-5 h-5" />,
         theme: "christmas",
@@ -184,7 +277,7 @@ const LiveStatus = () => {
     return {
       name: "Ljusshower",
       isLive: false,
-      currentSequence: "Säsongsviloläge",
+      currentSequence: fppSchedule?.enabled ? "Schemalagd viloläge" : "Säsongsviloläge",
       nextShow: getNextShowTime(now, month, hour),
       icon: <Clock className="w-5 h-5" />,
       theme: "default",
@@ -231,7 +324,7 @@ const LiveStatus = () => {
                   {showInfo.isLive ? (
                     <><Play className="w-3 h-3 mr-1" /> LIVE</>
                   ) : (
-                    'STANDBY'
+                    fppSchedule?.enabled ? <><Calendar className="w-3 h-3 mr-1" /> SCHEMALAGD</> : 'STANDBY'
                   )}
                 </Badge>
               </div>
@@ -277,10 +370,20 @@ const LiveStatus = () => {
             </div>
           )}
 
-          {/* Show schedule info when offline for too long */}
+          {/* Show schedule info when offline but emphasize schedule data */}
           {!showInfo.isConnected && connectionAge > 30 && (
             <div className="text-xs text-muted-foreground opacity-75">
-              Visar schemalagd information
+              {fppSchedule?.enabled ? 
+                'Visar schemalagd information från FPP' : 
+                'FPP ej ansluten - visar standard schema'}
+            </div>
+          )}
+          
+          {/* Connection warning for CORS issues */}
+          {!showInfo.isConnected && connectionAge > 60 && (
+            <div className="flex items-center gap-1 text-xs text-orange-500">
+              <AlertCircle className="w-3 h-3" />
+              Tips: Kontrollera CORS-inställningar på FPP för {FPP_CONTROLLER_IP}
             </div>
           )}
         </div>
