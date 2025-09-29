@@ -26,9 +26,9 @@ interface HAConnectionStatus {
   lastUpdate: Date | null;
 }
 
-// Home Assistant configuration - You need to set your token
+// Home Assistant configuration
 const HA_URL = 'https://rodbettan.org';
-const HA_TOKEN = 'your_long_lived_access_token_here'; // Replace with your actual token
+const HA_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJjYTQzMGQ3MTBjNWE0MWZlYjJkNzYxNjc5NmFjNzJmZCIsImlhdCI6MTc1OTEyNTIzMSwiZXhwIjoyMDc0NDg1MjMxfQ.ReTYE8C8vGYoJXW7EUbhaSwtq7k-nx8pXEGTS4GWhgQ';
 
 const LiveStatus = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -44,31 +44,38 @@ const LiveStatus = () => {
     return () => clearInterval(timer);
   }, []);
 
-  // Fetch FPP status from Home Assistant
+  // Fetch FPP status from Home Assistant with CORS handling
   const fetchFPPStatus = async () => {
     try {
+      // Try with CORS mode first, then no-cors if that fails
+      const fetchOptions = {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${HA_TOKEN}`,
+          'Content-Type': 'application/json'
+        },
+        mode: 'cors' as RequestMode
+      };
+
       const [systemResponse, currentSongResponse, nextSongResponse, progressResponse, remainingResponse, progressPercentResponse] = await Promise.all([
-        fetch(`${HA_URL}/api/states/sensor.fpp_system_status`, {
-          headers: {
-            'Authorization': `Bearer ${HA_TOKEN}`,
-            'Content-Type': 'application/json'
-          }
-        }),
-        fetch(`${HA_URL}/api/states/sensor.fpp_current_song`, {
-          headers: { 'Authorization': `Bearer ${HA_TOKEN}` }
-        }),
-        fetch(`${HA_URL}/api/states/sensor.fpp_next_song`, {
-          headers: { 'Authorization': `Bearer ${HA_TOKEN}` }
-        }),
-        fetch(`${HA_URL}/api/states/sensor.fpp_progress_seconds`, {
-          headers: { 'Authorization': `Bearer ${HA_TOKEN}` }
-        }),
-        fetch(`${HA_URL}/api/states/sensor.fpp_remaining_seconds`, {
-          headers: { 'Authorization': `Bearer ${HA_TOKEN}` }
-        }),
-        fetch(`${HA_URL}/api/states/sensor.fpp_progress_percentage`, {
-          headers: { 'Authorization': `Bearer ${HA_TOKEN}` }
-        })
+        fetch(`${HA_URL}/api/states/sensor.fpp_system_status`, fetchOptions).catch(() => 
+          fetch(`${HA_URL}/api/states/sensor.fpp_system_status`, { ...fetchOptions, mode: 'no-cors' })
+        ),
+        fetch(`${HA_URL}/api/states/sensor.fpp_current_song`, fetchOptions).catch(() => 
+          fetch(`${HA_URL}/api/states/sensor.fpp_current_song`, { ...fetchOptions, mode: 'no-cors' })
+        ),
+        fetch(`${HA_URL}/api/states/sensor.fpp_next_song`, fetchOptions).catch(() => 
+          fetch(`${HA_URL}/api/states/sensor.fpp_next_song`, { ...fetchOptions, mode: 'no-cors' })
+        ),
+        fetch(`${HA_URL}/api/states/sensor.fpp_progress_seconds`, fetchOptions).catch(() => 
+          fetch(`${HA_URL}/api/states/sensor.fpp_progress_seconds`, { ...fetchOptions, mode: 'no-cors' })
+        ),
+        fetch(`${HA_URL}/api/states/sensor.fpp_remaining_seconds`, fetchOptions).catch(() => 
+          fetch(`${HA_URL}/api/states/sensor.fpp_remaining_seconds`, { ...fetchOptions, mode: 'no-cors' })
+        ),
+        fetch(`${HA_URL}/api/states/sensor.fpp_progress_percentage`, fetchOptions).catch(() => 
+          fetch(`${HA_URL}/api/states/sensor.fpp_progress_percentage`, { ...fetchOptions, mode: 'no-cors' })
+        )
       ]);
 
       if (systemResponse.ok) {
@@ -92,9 +99,14 @@ const LiveStatus = () => {
         });
 
         setHaStatus({ connected: true, lastUpdate: new Date() });
+      } else {
+        console.log('HA Response not OK, using fallback data');
+        // Use fallback/mock data when HA is not accessible
+        setHaStatus({ connected: false, lastUpdate: haStatus.lastUpdate });
       }
     } catch (error) {
       console.error('Fel vid hämtning av FPP-status:', error);
+      console.log('Använder offline-läge');
       setHaStatus({ connected: false, lastUpdate: haStatus.lastUpdate });
     }
   };
