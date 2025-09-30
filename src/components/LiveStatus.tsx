@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
-import { Ghost, TreePine, Play, Clock, Wifi, WifiOff } from "lucide-react";
+import { Ghost, TreePine, Play, Clock } from "lucide-react";
 
 interface ShowInfo {
   name: string;
@@ -13,28 +12,8 @@ interface ShowInfo {
   theme: string;
 }
 
-interface FPPPlaybackInfo {
-  currentSong: string;
-  nextSong: string;
-  progressSeconds: number;
-  remainingSeconds: number;
-  progressPercent: number;
-}
-
-interface HAConnectionStatus {
-  connected: boolean;
-  lastUpdate: Date | null;
-}
-
-// Home Assistant configuration
-const HA_URL = 'https://rodbettan.org';
-const HA_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJjYTQzMGQ3MTBjNWE0MWZlYjJkNzYxNjc5NmFjNzJmZCIsImlhdCI6MTc1OTEyNTIzMSwiZXhwIjoyMDc0NDg1MjMxfQ.ReTYE8C8vGYoJXW7EUbhaSwtq7k-nx8pXEGTS4GWhgQ';
-
 const LiveStatus = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
-  const [playbackInfo, setPlaybackInfo] = useState<FPPPlaybackInfo | null>(null);
-  const [haStatus, setHaStatus] = useState<HAConnectionStatus>({ connected: false, lastUpdate: null });
-  const [fppSystemStatus, setFppSystemStatus] = useState<string>('unknown');
   
   useEffect(() => {
     const timer = setInterval(() => {
@@ -44,83 +23,19 @@ const LiveStatus = () => {
     return () => clearInterval(timer);
   }, []);
 
-  // Fetch FPP status from Home Assistant
-  const fetchFPPStatus = async () => {
-    try {
-      const headers = {
-        'Authorization': `Bearer ${HA_TOKEN}`,
-        'Content-Type': 'application/json'
-      };
-
-      const [systemResponse, currentSongResponse, nextSongResponse, progressResponse, remainingResponse, progressPercentResponse] = await Promise.all([
-        fetch(`${HA_URL}/api/states/sensor.fpp_system_status`, { headers }),
-        fetch(`${HA_URL}/api/states/sensor.fpp_current_song`, { headers }),
-        fetch(`${HA_URL}/api/states/sensor.fpp_next_song`, { headers }),
-        fetch(`${HA_URL}/api/states/sensor.fpp_progress_seconds`, { headers }),
-        fetch(`${HA_URL}/api/states/sensor.fpp_remaining_seconds`, { headers }),
-        fetch(`${HA_URL}/api/states/sensor.fpp_progress_percentage`, { headers })
-      ]);
-
-      if (!systemResponse.ok) {
-        throw new Error(`HA API error: ${systemResponse.status}`);
-      }
-
-      const [systemData, currentSong, nextSong, progress, remaining, progressPercent] = await Promise.all([
-        systemResponse.json(),
-        currentSongResponse.json(),
-        nextSongResponse.json(),
-        progressResponse.json(),
-        remainingResponse.json(),
-        progressPercentResponse.json()
-      ]);
-
-      setFppSystemStatus(systemData.state);
-      setPlaybackInfo({
-        currentSong: currentSong.state !== 'None' && currentSong.state !== 'unavailable' ? currentSong.state : 'Okänd',
-        nextSong: nextSong.state !== 'None' && nextSong.state !== 'unavailable' ? nextSong.state : 'Okänd',
-        progressSeconds: parseInt(progress.state) || 0,
-        remainingSeconds: parseInt(remaining.state) || 0,
-        progressPercent: parseFloat(progressPercent.state) || 0
-      });
-      setHaStatus({ connected: true, lastUpdate: new Date() });
-    } catch (error) {
-      console.error('Fel vid hämtning av FPP-status:', error);
-      setHaStatus({ connected: false, lastUpdate: haStatus.lastUpdate });
-    }
-  };
-
-  useEffect(() => {
-    // Initial fetch
-    fetchFPPStatus();
-    
-    // Update every 5 seconds
-    const interval = setInterval(fetchFPPStatus, 5000);
-    
-    return () => clearInterval(interval);
-  }, []);
-
-  // Format seconds to MM:SS
-  const formatTime = (seconds: number): string => {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
-  };
-
   const getShowStatus = (): ShowInfo => {
     const now = new Date();
-    const month = now.getMonth() + 1;
+    const month = now.getMonth() + 1; // 0-based to 1-based
     const hour = now.getHours();
-    
-    // Check if FPP is playing
-    const isPlaying = fppSystemStatus === 'playing' || fppSystemStatus === 'idle';
     
     // Halloween season: October
     if (month === 10) {
+      const isShowTime = hour >= 18 && hour <= 22; // 6 PM to 10 PM
       return {
         name: "Halloween Show",
-        isLive: isPlaying,
-        currentSequence: playbackInfo?.currentSong || (isPlaying ? "Spelas nu" : "Inte på luften"),
-        nextShow: playbackInfo?.nextSong ? `Nästa: ${playbackInfo.nextSong}` : "Nästa show kl 18:00",
+        isLive: isShowTime,
+        currentSequence: isShowTime ? getHalloweenSequence(now) : "Inte på luften",
+        nextShow: isShowTime ? "Nästa sekvens om 2 minuter" : "Nästa show kl 18:00",
         icon: <Ghost className="w-5 h-5" />,
         theme: "halloween"
       };
@@ -128,11 +43,12 @@ const LiveStatus = () => {
     
     // Christmas season: December 1-25
     if (month === 12 && now.getDate() <= 25) {
+      const isShowTime = hour >= 17 && hour <= 23; // 5 PM to 11 PM
       return {
         name: "Julshow",
-        isLive: isPlaying,
-        currentSequence: playbackInfo?.currentSong || (isPlaying ? "Spelas nu" : "Inte på luften"),
-        nextShow: playbackInfo?.nextSong ? `Nästa: ${playbackInfo.nextSong}` : "Nästa show kl 17:00",
+        isLive: isShowTime,
+        currentSequence: isShowTime ? getChristmasSequence(now) : "Inte på luften",
+        nextShow: isShowTime ? "Nästa sekvens om 90 sekunder" : "Nästa show kl 17:00",
         icon: <TreePine className="w-5 h-5" />,
         theme: "christmas"
       };
@@ -141,15 +57,43 @@ const LiveStatus = () => {
     // Off season
     return {
       name: "Ljusshower",
-      isLive: isPlaying,
-      currentSequence: playbackInfo?.currentSong || "Inte säsong",
-      nextShow: playbackInfo?.nextSong || (month < 10 ? "Halloween-shower börjar i oktober" : "Julshower börjar 1 december"),
+      isLive: false,
+      currentSequence: "Inte säsong",
+      nextShow: month < 10 ? "Halloween-shower börjar i oktober" : "Julshower börjar 1 december",
       icon: <Clock className="w-5 h-5" />,
       theme: "default"
     };
   };
 
-  // Remove old mock functions as we're using real data
+  const getHalloweenSequence = (time: Date): string => {
+    const sequences = [
+      "Thriller - Michael Jackson",
+      "Ghostbusters Theme",
+      "Monster Mash",
+      "This is Halloween",
+      "Somebody's Watching Me",
+      "Time Warp"
+    ];
+    
+    const index = Math.floor((time.getMinutes() + time.getSeconds() / 60) / 10) % sequences.length;
+    return sequences[index];
+  };
+
+  const getChristmasSequence = (time: Date): string => {
+    const sequences = [
+      "Jingle Bells - Traditional",
+      "Carol of the Bells",
+      "The Christmas Song",
+      "Silent Night",
+      "Deck the Halls",
+      "White Christmas",
+      "Feliz Navidad"
+    ];
+    
+    const index = Math.floor((time.getMinutes() + time.getSeconds() / 60) / 7) % sequences.length;
+    return sequences[index];
+  };
+
   const showInfo = getShowStatus();
 
   return (
@@ -158,16 +102,6 @@ const LiveStatus = () => {
       showInfo.theme === 'christmas' ? 'border-christmas/30' :
       'border-border'
     }`}>
-      {/* Connection status indicator */}
-      <div className="flex items-center gap-2 mb-2">
-        <div className={`flex items-center gap-1 text-xs ${
-          haStatus.connected ? 'text-green-500' : 'text-red-500'
-        }`}>
-          {haStatus.connected ? <Wifi className="w-3 h-3" /> : <WifiOff className="w-3 h-3" />}
-          {haStatus.connected ? 'Home Assistant ansluten' : 'Home Assistant frånkopplad'}
-        </div>
-      </div>
-
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className={`${
@@ -178,7 +112,7 @@ const LiveStatus = () => {
             {showInfo.icon}
           </div>
           
-          <div className="flex-1">
+          <div>
             <div className="flex items-center gap-2 mb-1">
               <h3 className="font-semibold text-sm">{showInfo.name}</h3>
               <Badge 
@@ -201,23 +135,9 @@ const LiveStatus = () => {
               </Badge>
             </div>
             
-            <div className="text-xs text-muted-foreground space-y-1">
+            <div className="text-xs text-muted-foreground">
               <div className="font-medium">{showInfo.currentSequence}</div>
               <div className="text-xs opacity-75">{showInfo.nextShow}</div>
-              
-              {/* Progress bar and time display */}
-              {playbackInfo && showInfo.isLive && (
-                <div className="mt-2 space-y-1">
-                  <Progress 
-                    value={playbackInfo.progressPercent} 
-                    className="h-2 w-full"
-                  />
-                  <div className="flex justify-between text-xs opacity-75">
-                    <span>{formatTime(playbackInfo.progressSeconds)}</span>
-                    <span>{formatTime(playbackInfo.progressSeconds + playbackInfo.remainingSeconds)}</span>
-                  </div>
-                </div>
-              )}
             </div>
           </div>
         </div>
