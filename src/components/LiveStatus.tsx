@@ -44,69 +44,47 @@ const LiveStatus = () => {
     return () => clearInterval(timer);
   }, []);
 
-  // Fetch FPP status from Home Assistant with CORS handling
+  // Fetch FPP status from Home Assistant
   const fetchFPPStatus = async () => {
     try {
-      // Try with CORS mode first, then no-cors if that fails
-      const fetchOptions = {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${HA_TOKEN}`,
-          'Content-Type': 'application/json'
-        },
-        mode: 'cors' as RequestMode
+      const headers = {
+        'Authorization': `Bearer ${HA_TOKEN}`,
+        'Content-Type': 'application/json'
       };
 
       const [systemResponse, currentSongResponse, nextSongResponse, progressResponse, remainingResponse, progressPercentResponse] = await Promise.all([
-        fetch(`${HA_URL}/api/states/sensor.fpp_system_status`, fetchOptions).catch(() => 
-          fetch(`${HA_URL}/api/states/sensor.fpp_system_status`, { ...fetchOptions, mode: 'no-cors' })
-        ),
-        fetch(`${HA_URL}/api/states/sensor.fpp_current_song`, fetchOptions).catch(() => 
-          fetch(`${HA_URL}/api/states/sensor.fpp_current_song`, { ...fetchOptions, mode: 'no-cors' })
-        ),
-        fetch(`${HA_URL}/api/states/sensor.fpp_next_song`, fetchOptions).catch(() => 
-          fetch(`${HA_URL}/api/states/sensor.fpp_next_song`, { ...fetchOptions, mode: 'no-cors' })
-        ),
-        fetch(`${HA_URL}/api/states/sensor.fpp_progress_seconds`, fetchOptions).catch(() => 
-          fetch(`${HA_URL}/api/states/sensor.fpp_progress_seconds`, { ...fetchOptions, mode: 'no-cors' })
-        ),
-        fetch(`${HA_URL}/api/states/sensor.fpp_remaining_seconds`, fetchOptions).catch(() => 
-          fetch(`${HA_URL}/api/states/sensor.fpp_remaining_seconds`, { ...fetchOptions, mode: 'no-cors' })
-        ),
-        fetch(`${HA_URL}/api/states/sensor.fpp_progress_percentage`, fetchOptions).catch(() => 
-          fetch(`${HA_URL}/api/states/sensor.fpp_progress_percentage`, { ...fetchOptions, mode: 'no-cors' })
-        )
+        fetch(`${HA_URL}/api/states/sensor.fpp_system_status`, { headers }),
+        fetch(`${HA_URL}/api/states/sensor.fpp_current_song`, { headers }),
+        fetch(`${HA_URL}/api/states/sensor.fpp_next_song`, { headers }),
+        fetch(`${HA_URL}/api/states/sensor.fpp_progress_seconds`, { headers }),
+        fetch(`${HA_URL}/api/states/sensor.fpp_remaining_seconds`, { headers }),
+        fetch(`${HA_URL}/api/states/sensor.fpp_progress_percentage`, { headers })
       ]);
 
-      if (systemResponse.ok) {
-        const systemData = await systemResponse.json();
-        setFppSystemStatus(systemData.state);
-
-        const [currentSong, nextSong, progress, remaining, progressPercent] = await Promise.all([
-          currentSongResponse.json(),
-          nextSongResponse.json(),
-          progressResponse.json(),
-          remainingResponse.json(),
-          progressPercentResponse.json()
-        ]);
-
-        setPlaybackInfo({
-          currentSong: currentSong.state || 'Okänd',
-          nextSong: nextSong.state || 'Okänd',
-          progressSeconds: parseInt(progress.state) || 0,
-          remainingSeconds: parseInt(remaining.state) || 0,
-          progressPercent: parseFloat(progressPercent.state) || 0
-        });
-
-        setHaStatus({ connected: true, lastUpdate: new Date() });
-      } else {
-        console.log('HA Response not OK, using fallback data');
-        // Use fallback/mock data when HA is not accessible
-        setHaStatus({ connected: false, lastUpdate: haStatus.lastUpdate });
+      if (!systemResponse.ok) {
+        throw new Error(`HA API error: ${systemResponse.status}`);
       }
+
+      const [systemData, currentSong, nextSong, progress, remaining, progressPercent] = await Promise.all([
+        systemResponse.json(),
+        currentSongResponse.json(),
+        nextSongResponse.json(),
+        progressResponse.json(),
+        remainingResponse.json(),
+        progressPercentResponse.json()
+      ]);
+
+      setFppSystemStatus(systemData.state);
+      setPlaybackInfo({
+        currentSong: currentSong.state !== 'None' && currentSong.state !== 'unavailable' ? currentSong.state : 'Okänd',
+        nextSong: nextSong.state !== 'None' && nextSong.state !== 'unavailable' ? nextSong.state : 'Okänd',
+        progressSeconds: parseInt(progress.state) || 0,
+        remainingSeconds: parseInt(remaining.state) || 0,
+        progressPercent: parseFloat(progressPercent.state) || 0
+      });
+      setHaStatus({ connected: true, lastUpdate: new Date() });
     } catch (error) {
       console.error('Fel vid hämtning av FPP-status:', error);
-      console.log('Använder offline-läge');
       setHaStatus({ connected: false, lastUpdate: haStatus.lastUpdate });
     }
   };
