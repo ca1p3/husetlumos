@@ -141,16 +141,18 @@ const LiveStatus = () => {
     // Halloween season: October
     if (month === 10) {
       const isShowTime = hour >= 18 && hour <= 22;
-      const nextShowInfo = nextPlaylistName 
-        ? `Nästa: ${nextPlaylistName} (${nextPlaylistTime})`
-        : countdown 
-          ? `Nästa show startar om ${countdown}` 
-          : (isShowTime ? "Show pågår" : "Nästa show kl 18:00");
+      const nextShowInfo = isPlaying
+        ? (nextPlaylistName ? `Nästa: ${nextPlaylistName}` : "")
+        : nextPlaylistName 
+          ? `Nästa: ${nextPlaylistName}`
+          : countdown 
+            ? `Startar om ${countdown}` 
+            : (isShowTime ? "Show pågår snart" : "Startar kl 18:00");
           
       return {
         name: "Halloween Show",
         isLive: isPlaying && isShowTime,
-        currentSequence: isPlaying ? currentSequence : "Inte på luften",
+        currentSequence: isPlaying ? currentSequence : "Väntar på start",
         nextSequence: isPlaying ? "Laddar..." : "",
         nextShow: nextShowInfo,
         icon: <Ghost className="w-5 h-5" />,
@@ -163,16 +165,18 @@ const LiveStatus = () => {
     // Christmas season: December 1-25
     if (month === 12 && now.getDate() <= 25) {
       const isShowTime = hour >= 17 && hour <= 23;
-      const nextShowInfo = nextPlaylistName 
-        ? `Nästa: ${nextPlaylistName} (${nextPlaylistTime})`
-        : countdown 
-          ? `Nästa show startar om ${countdown}` 
-          : (isShowTime ? "Show pågår" : "Nästa show kl 17:00");
+      const nextShowInfo = isPlaying
+        ? (nextPlaylistName ? `Nästa: ${nextPlaylistName}` : "")
+        : nextPlaylistName 
+          ? `Nästa: ${nextPlaylistName}`
+          : countdown 
+            ? `Startar om ${countdown}` 
+            : (isShowTime ? "Show pågår snart" : "Startar kl 17:00");
           
       return {
         name: "Julshow",
         isLive: isPlaying && isShowTime,
-        currentSequence: isPlaying ? currentSequence : "Inte på luften",
+        currentSequence: isPlaying ? currentSequence : "Väntar på start",
         nextSequence: isPlaying ? "Laddar..." : "",
         nextShow: nextShowInfo,
         icon: <TreePine className="w-5 h-5" />,
@@ -184,7 +188,7 @@ const LiveStatus = () => {
     
     // Off season
     const nextShowInfo = nextPlaylistName 
-      ? `Nästa: ${nextPlaylistName} (${nextPlaylistTime})`
+      ? `Nästa: ${nextPlaylistName}`
       : month < 10 
         ? "Halloween-shower börjar i oktober" 
         : "Julshower börjar 1 december";
@@ -209,53 +213,62 @@ const LiveStatus = () => {
   };
 
   return (
-    <Card className={`p-4 bg-card/80 backdrop-blur-sm border-2 ${
-      showInfo.theme === 'halloween' ? 'border-halloween/30' :
-      showInfo.theme === 'christmas' ? 'border-christmas/30' :
-      'border-border'
+    <Card className={`p-4 backdrop-blur-sm border-2 transition-all ${
+      showInfo.isLive
+        ? showInfo.theme === 'halloween' 
+          ? 'bg-halloween/20 border-halloween' 
+          : showInfo.theme === 'christmas'
+            ? 'bg-christmas/20 border-christmas'
+            : 'bg-primary/20 border-primary'
+        : showInfo.theme === 'halloween' 
+          ? 'bg-card/80 border-halloween/30' 
+          : showInfo.theme === 'christmas'
+            ? 'bg-card/80 border-christmas/30'
+            : 'bg-card/80 border-border'
     }`}>
       <div className="space-y-3">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 flex-1">
             <div className={`${
-              showInfo.theme === 'halloween' ? 'text-halloween' :
-              showInfo.theme === 'christmas' ? 'text-christmas' :
-              'text-muted-foreground'
+              showInfo.isLive
+                ? showInfo.theme === 'halloween' ? 'text-halloween animate-pulse' :
+                  showInfo.theme === 'christmas' ? 'text-christmas animate-pulse' :
+                  'text-primary animate-pulse'
+                : showInfo.theme === 'halloween' ? 'text-halloween' :
+                  showInfo.theme === 'christmas' ? 'text-christmas' :
+                  'text-muted-foreground'
             }`}>
               {showInfo.icon}
             </div>
             
-            <div>
+            <div className="flex-1">
               <div className="flex items-center gap-2 mb-1">
                 <h3 className="font-semibold text-sm">{showInfo.name}</h3>
-                <Badge 
-                  variant={showInfo.isLive ? "default" : "secondary"}
-                  className={`text-xs ${
-                    showInfo.isLive 
-                      ? showInfo.theme === 'halloween' 
+                {showInfo.isLive && (
+                  <Badge 
+                    variant="default"
+                    className={`text-xs animate-pulse ${
+                      showInfo.theme === 'halloween' 
                         ? 'bg-halloween text-halloween-dark' 
                         : showInfo.theme === 'christmas'
                           ? 'bg-christmas text-white'
                           : 'bg-primary text-primary-foreground'
-                      : ''
-                  }`}
-                >
-                  {showInfo.isLive ? (
-                    <><Play className="w-3 h-3 mr-1" /> LIVE</>
-                  ) : (
-                    'OFFLINE'
-                  )}
-                </Badge>
+                    }`}
+                  >
+                    <Play className="w-3 h-3 mr-1" /> LIVE
+                  </Badge>
+                )}
               </div>
               
               <div className="text-xs text-muted-foreground space-y-1">
-                {showInfo.isLive && showInfo.currentSequence && (
-                  <div className="font-medium">Spelas nu: {showInfo.currentSequence}</div>
+                {showInfo.currentSequence && (
+                  <div className={`font-medium ${showInfo.isLive ? 'text-foreground' : ''}`}>
+                    {showInfo.isLive ? `♫ ${showInfo.currentSequence}` : showInfo.currentSequence}
+                  </div>
                 )}
-                {!showInfo.isLive && showInfo.currentSequence && (
-                  <div className="font-medium">{showInfo.currentSequence}</div>
+                {showInfo.nextShow && (
+                  <div className="text-xs opacity-75">{showInfo.nextShow}</div>
                 )}
-                <div className="text-xs opacity-75">{showInfo.nextShow}</div>
               </div>
             </div>
           </div>
@@ -267,19 +280,25 @@ const LiveStatus = () => {
         </div>
         
         {showInfo.isLive && showInfo.progress !== undefined && (
-          <div className="space-y-1">
-            <div className="flex justify-between text-xs text-muted-foreground">
-              <span>Framsteg</span>
+          <div className="space-y-1.5">
+            <div className="flex justify-between text-xs">
+              <span className={
+                showInfo.theme === 'halloween' ? 'text-halloween' :
+                showInfo.theme === 'christmas' ? 'text-christmas' :
+                'text-primary'
+              }>
+                Framsteg
+              </span>
               {showInfo.secondsRemaining !== undefined && (
-                <span>{formatTime(showInfo.secondsRemaining)} kvar</span>
+                <span className="text-muted-foreground">{formatTime(showInfo.secondsRemaining)} kvar</span>
               )}
             </div>
             <Progress 
               value={showInfo.progress} 
-              className={`h-2 ${
+              className={`h-2.5 ${
                 showInfo.theme === 'halloween' ? '[&>div]:bg-halloween' :
                 showInfo.theme === 'christmas' ? '[&>div]:bg-christmas' :
-                ''
+                '[&>div]:bg-primary'
               }`}
             />
           </div>
