@@ -14,6 +14,19 @@ interface FPPStatus {
   seconds_played?: number;
   seconds_remaining?: number;
   time?: string;
+  scheduler?: {
+    enabled: number;
+    nextPlaylist?: {
+      playlistName: string;
+      scheduledStartTime: number;
+      scheduledStartTimeStr: string;
+    };
+    status: string;
+  };
+  next_playlist?: {
+    playlist: string;
+    start_time: string;
+  };
 }
 
 interface ShowInfo {
@@ -119,15 +132,27 @@ const LiveStatus = () => {
     const totalSeconds = secondsPlayed + secondsRemaining;
     const progress = totalSeconds > 0 ? (secondsPlayed / totalSeconds) * 100 : 0;
     
+    // Get next show info from scheduler
+    const nextPlaylistName = fppStatus?.scheduler?.nextPlaylist?.playlistName || 
+                             fppStatus?.next_playlist?.playlist || "";
+    const nextPlaylistTime = fppStatus?.scheduler?.nextPlaylist?.scheduledStartTimeStr || 
+                            fppStatus?.next_playlist?.start_time || "";
+    
     // Halloween season: October
     if (month === 10) {
       const isShowTime = hour >= 18 && hour <= 22;
+      const nextShowInfo = nextPlaylistName 
+        ? `Nästa: ${nextPlaylistName} (${nextPlaylistTime})`
+        : countdown 
+          ? `Nästa show startar om ${countdown}` 
+          : (isShowTime ? "Show pågår" : "Nästa show kl 18:00");
+          
       return {
         name: "Halloween Show",
         isLive: isPlaying && isShowTime,
         currentSequence: isPlaying ? currentSequence : "Inte på luften",
         nextSequence: isPlaying ? "Laddar..." : "",
-        nextShow: countdown ? `Nästa show startar om ${countdown}` : (isShowTime ? "Show pågår" : "Nästa show kl 18:00"),
+        nextShow: nextShowInfo,
         icon: <Ghost className="w-5 h-5" />,
         theme: "halloween",
         progress: isPlaying ? progress : undefined,
@@ -138,12 +163,18 @@ const LiveStatus = () => {
     // Christmas season: December 1-25
     if (month === 12 && now.getDate() <= 25) {
       const isShowTime = hour >= 17 && hour <= 23;
+      const nextShowInfo = nextPlaylistName 
+        ? `Nästa: ${nextPlaylistName} (${nextPlaylistTime})`
+        : countdown 
+          ? `Nästa show startar om ${countdown}` 
+          : (isShowTime ? "Show pågår" : "Nästa show kl 17:00");
+          
       return {
         name: "Julshow",
         isLive: isPlaying && isShowTime,
         currentSequence: isPlaying ? currentSequence : "Inte på luften",
         nextSequence: isPlaying ? "Laddar..." : "",
-        nextShow: countdown ? `Nästa show startar om ${countdown}` : (isShowTime ? "Show pågår" : "Nästa show kl 17:00"),
+        nextShow: nextShowInfo,
         icon: <TreePine className="w-5 h-5" />,
         theme: "christmas",
         progress: isPlaying ? progress : undefined,
@@ -152,12 +183,18 @@ const LiveStatus = () => {
     }
     
     // Off season
+    const nextShowInfo = nextPlaylistName 
+      ? `Nästa: ${nextPlaylistName} (${nextPlaylistTime})`
+      : month < 10 
+        ? "Halloween-shower börjar i oktober" 
+        : "Julshower börjar 1 december";
+        
     return {
       name: "Ljusshower",
       isLive: false,
       currentSequence: "Inte säsong",
       nextSequence: "",
-      nextShow: month < 10 ? "Halloween-shower börjar i oktober" : "Julshower börjar 1 december",
+      nextShow: nextShowInfo,
       icon: <Clock className="w-5 h-5" />,
       theme: "default"
     };
