@@ -143,43 +143,51 @@ const LiveStatus = () => {
   };
 
   return (
-    <Card className={`p-4 backdrop-blur-sm border-2 transition-all ${
+    <Card className={`p-5 backdrop-blur-sm border-2 transition-all ${
       showInfo.isLive
-        ? 'bg-primary/20 border-primary'
+        ? 'bg-primary/20 border-primary shadow-lg shadow-primary/20'
         : 'bg-card/80 border-border'
     }`}>
-      <div className="space-y-3">
+      <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3 flex-1">
-            <div className={`transition-all duration-300 ${
+          <div className="flex items-center gap-4 flex-1">
+            <div className={`relative transition-all duration-300 ${
               showInfo.isLive 
-                ? 'text-primary animate-pulse scale-110' 
+                ? 'text-primary scale-110' 
                 : 'text-primary/60 hover:text-primary hover:scale-110'
             }`}>
               {showInfo.icon}
+              {showInfo.isLive && (
+                <>
+                  <span className="absolute -top-1 -right-1 flex h-3 w-3">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-3 w-3 bg-primary"></span>
+                  </span>
+                </>
+              )}
             </div>
             
             <div className="flex-1">
-              <div className="flex items-center gap-2 mb-1">
-                <h3 className="font-semibold text-sm">{showInfo.name}</h3>
+              <div className="flex items-center gap-2 mb-2">
+                <h3 className="font-bold text-lg text-foreground">{showInfo.name}</h3>
                 {showInfo.isLive && (
                   <Badge 
                     variant="default"
-                    className="text-xs animate-pulse bg-primary text-primary-foreground"
+                    className="text-xs animate-pulse bg-primary text-primary-foreground px-2 py-0.5"
                   >
                     <Play className="w-3 h-3 mr-1" /> LIVE
                   </Badge>
                 )}
               </div>
               
-              <div className="text-xs text-muted-foreground space-y-1">
+              <div className="space-y-1.5">
                 {showInfo.currentSequence && (
-                  <div className={`font-medium ${showInfo.isLive ? 'text-foreground' : ''}`}>
+                  <div className={`font-semibold text-base ${showInfo.isLive ? 'text-primary' : 'text-foreground/70'}`}>
                     {showInfo.isLive ? `♫ ${showInfo.currentSequence}` : showInfo.currentSequence}
                   </div>
                 )}
                 {showInfo.nextShow && (
-                  <div className="text-xs opacity-75">{showInfo.nextShow}</div>
+                  <div className="text-sm text-muted-foreground">{showInfo.nextShow}</div>
                 )}
               </div>
             </div>
@@ -187,8 +195,8 @@ const LiveStatus = () => {
           
           {countdown && (
             <div className="text-right">
-              <div className="text-xs text-muted-foreground mb-0.5">Startar om</div>
-              <div className="text-sm font-semibold text-primary animate-pulse">
+              <div className="text-sm text-muted-foreground mb-1">Startar om</div>
+              <div className="text-base font-bold text-primary animate-pulse">
                 {countdown}
               </div>
             </div>
@@ -196,18 +204,18 @@ const LiveStatus = () => {
         </div>
         
         {showInfo.isLive && showInfo.progress !== undefined && (
-          <div className="space-y-1.5">
-            <div className="flex justify-between text-xs">
-              <span className="text-primary">
+          <div className="space-y-2">
+            <div className="flex justify-between text-sm">
+              <span className="text-primary font-medium">
                 Framsteg
               </span>
               {showInfo.secondsRemaining !== undefined && (
-                <span className="text-muted-foreground">{formatTime(showInfo.secondsRemaining)} kvar</span>
+                <span className="text-foreground/70 font-semibold">{formatTime(showInfo.secondsRemaining)} kvar</span>
               )}
             </div>
             <Progress 
               value={showInfo.progress} 
-              className="h-2.5 [&>div]:bg-primary"
+              className="h-3 [&>div]:bg-primary [&>div]:animate-pulse"
             />
           </div>
         )}
