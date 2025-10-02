@@ -60,6 +60,35 @@ const Schedule = () => {
     return start > now;
   };
 
+  const getFilteredSchedule = (): PlaylistItem[] => {
+    const enabledItems = schedule.filter(item => item.enabled === 1);
+    if (enabledItems.length === 0) return [];
+
+    const now = new Date();
+    const today = now.toISOString().split('T')[0];
+
+    // Check if there are any shows today
+    const todayShows = enabledItems.filter(item => item.startDate === today);
+    if (todayShows.length > 0) {
+      return todayShows;
+    }
+
+    // If no shows today, find the next upcoming day with shows
+    const upcomingShows = enabledItems.filter(item => {
+      const showDate = new Date(item.startDate);
+      return showDate > now;
+    });
+
+    if (upcomingShows.length === 0) return [];
+
+    // Sort by date and get the earliest date
+    upcomingShows.sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
+    const nextDate = upcomingShows[0].startDate;
+
+    // Return all shows from that date
+    return upcomingShows.filter(item => item.startDate === nextDate);
+  };
+
   if (loading) {
     return (
       <Card className="bg-card/80 backdrop-blur-sm">
@@ -101,7 +130,7 @@ const Schedule = () => {
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-2">
-        {schedule.filter(item => item.enabled === 1).map((item, index) => {
+        {getFilteredSchedule().map((item, index) => {
           const isCurrent = isCurrentShow(item.startDate, item.startTime, item.endTime);
           const upcoming = isUpcoming(item.startDate, item.startTime);
           

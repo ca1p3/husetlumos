@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Ghost, TreePine, Zap } from "lucide-react";
+import { Ghost, TreePine, Zap, Heart } from "lucide-react";
 import heroImage from "@/assets/huset-lumos-hero.jpg";
 import LiveStatus from "@/components/LiveStatus";
 import Schedule from "@/components/Schedule";
@@ -95,8 +95,18 @@ const Index = () => {
           </Link>
         </div>
 
+        {/* Donation Button */}
+        <div className="mt-12">
+          <Link to="/donation">
+            <Button variant="outline" className="sparkle border-primary text-primary hover:bg-primary hover:text-primary-foreground px-8 py-6 text-lg">
+              <Heart className="w-5 h-5 mr-2" />
+              Stöd oss via Swish
+            </Button>
+          </Link>
+        </div>
+
         {/* Footer Info */}
-        <div className="mt-16 text-center">
+        <div className="mt-8 text-center">
           <p className="text-muted-foreground">
             Skapar oförglömliga stunder genom ljusets konst
           </p>
