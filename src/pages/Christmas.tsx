@@ -46,7 +46,7 @@ const Christmas = () => {
       {Array.from({ length: 30 }, (_, i) => (
         <Snowflake 
           key={`snow-${i}`} 
-          delay={i * 0.3} 
+          delay={i * 0.1} 
           size={Math.random() > 0.7 ? 'w-2 h-2' : 'w-1 h-1'}
         />
       ))}
