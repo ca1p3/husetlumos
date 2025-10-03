@@ -42,8 +42,11 @@ const Donation = () => {
             <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary via-halloween to-christmas-gold bg-clip-text text-transparent mb-4">
               Stöd Huset Lumos
             </h1>
-            <p className="text-xl text-muted-foreground">
+            <p className="text-xl text-muted-foreground mb-2">
               Hjälp oss att fortsätta sprida glädje genom ljusets magi
+            </p>
+            <p className="text-lg text-primary font-semibold">
+              10% av alla donationer går till Barncancerfonden
             </p>
           </div>
 
@@ -55,7 +58,7 @@ const Donation = () => {
                 Donera via Swish
               </CardTitle>
               <CardDescription>
-                Din donation hjälper oss att skapa ännu mer magi och underhålla våra ljusshower
+                Din donation hjälper oss att skapa ännu mer magi och underhålla våra ljusshower. 10% går till Barncancerfonden.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
@@ -88,6 +91,10 @@ const Donation = () => {
                   <li className="flex items-start gap-2">
                     <span className="text-primary mt-1">✨</span>
                     <span>Musik och ljudeffekter</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-primary mt-1">❤️</span>
+                    <span className="font-semibold">10% till Barncancerfonden</span>
                   </li>
                 </ul>
               </div>

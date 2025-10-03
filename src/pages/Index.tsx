@@ -96,13 +96,16 @@ const Index = () => {
         </div>
 
         {/* Donation Button */}
-        <div className="mt-12">
+        <div className="mt-12 text-center">
           <Link to="/donation">
             <Button variant="outline" className="sparkle border-primary text-primary hover:bg-primary hover:text-primary-foreground px-8 py-6 text-lg">
               <Heart className="w-5 h-5 mr-2" />
               Stöd oss via Swish
             </Button>
           </Link>
+          <p className="text-sm text-muted-foreground mt-2">
+            10% av alla donationer går till Barncancerfonden
+          </p>
         </div>
 
         {/* Footer Info */}
