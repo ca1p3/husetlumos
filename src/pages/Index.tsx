@@ -103,9 +103,10 @@ const Index = () => {
               Stöd oss via Swish
             </Button>
           </Link>
-          <p className="text-sm text-muted-foreground mt-2">
-            10% av alla donationer går till Barncancerfonden
-          </p>
+          <div className="flex items-center justify-center gap-2 mt-3 text-primary font-semibold text-lg">
+            <Heart className="w-5 h-5" fill="currentColor" />
+            <p>10% av alla donationer går till Barncancerfonden</p>
+          </div>
         </div>
 
         {/* Footer Info */}

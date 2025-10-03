@@ -42,12 +42,16 @@ const Donation = () => {
             <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary via-halloween to-christmas-gold bg-clip-text text-transparent mb-4">
               Stöd Huset Lumos
             </h1>
-            <p className="text-xl text-muted-foreground mb-2">
+            <p className="text-xl text-muted-foreground mb-4">
               Hjälp oss att fortsätta sprida glädje genom ljusets magi
             </p>
-            <p className="text-lg text-primary font-semibold">
-              10% av alla donationer går till Barncancerfonden
-            </p>
+            <div className="flex items-center justify-center gap-3 bg-primary/10 rounded-lg px-6 py-4 border-2 border-primary">
+              <Heart className="w-8 h-8 text-primary" fill="currentColor" />
+              <p className="text-2xl text-primary font-bold">
+                10% av alla donationer går till Barncancerfonden
+              </p>
+              <Heart className="w-8 h-8 text-primary" fill="currentColor" />
+            </div>
           </div>
 
           {/* Main Donation Card */}
