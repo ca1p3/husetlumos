@@ -16,9 +16,9 @@ const TwinklingLight = ({ delay = 0 }: { delay?: number }) => (
   />
 );
 
-const Snowflake = ({ delay = 0, size = 'w-1 h-1' }: { delay?: number; size?: string }) => (
-  <div 
-    className={`absolute ${size} bg-white rounded-full animate-snowfall opacity-60`}
+const Snowflake = ({ delay = 0, size = 'w-3 h-3' }: { delay?: number; size?: string }) => (
+  <SnowflakeIcon 
+    className={`absolute ${size} text-white animate-snowfall opacity-60`}
     style={{ 
       animationDelay: `${delay}s`,
       animationDuration: `${8 + Math.random() * 4}s`,
@@ -47,7 +47,7 @@ const Christmas = () => {
         <Snowflake 
           key={`snow-${i}`} 
           delay={i * 0.1} 
-          size={Math.random() > 0.7 ? 'w-2 h-2' : 'w-1 h-1'}
+          size={Math.random() > 0.7 ? 'w-4 h-4' : 'w-3 h-3'}
         />
       ))}
       
