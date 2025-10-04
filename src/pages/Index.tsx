@@ -5,6 +5,7 @@ import { Ghost, TreePine, Zap, Heart } from "lucide-react";
 import heroImage from "@/assets/huset-lumos-hero.jpg";
 import LiveStatus from "@/components/LiveStatus";
 import Schedule from "@/components/Schedule";
+import { Navigation } from "@/components/Navigation";
 
 const FloatingLight = ({ delay = 0 }: { delay?: number }) => (
   <div 
@@ -20,6 +21,8 @@ const FloatingLight = ({ delay = 0 }: { delay?: number }) => (
 const Index = () => {
   return (
     <div className="min-h-screen relative overflow-hidden page-transition">
+      <Navigation />
+      
       {/* Hero Background Image */}
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-30"

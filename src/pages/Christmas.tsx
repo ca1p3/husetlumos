@@ -1,8 +1,7 @@
-import { Link } from "react-router-dom";
 import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { ArrowLeft, TreePine, Star, Gift, Snowflake as SnowflakeIcon } from "lucide-react";
+import { TreePine, Star, Gift, Snowflake as SnowflakeIcon } from "lucide-react";
 import christmasHero from "@/assets/christmas-hero.jpg";
+import { Navigation } from "@/components/Navigation";
 
 const TwinklingLight = ({ delay = 0 }: { delay?: number }) => (
   <div 
@@ -30,6 +29,8 @@ const Snowflake = ({ delay = 0, size = 'w-3 h-3' }: { delay?: number; size?: str
 const Christmas = () => {
   return (
     <div className="min-h-screen relative overflow-hidden page-transition" style={{ background: 'var(--gradient-christmas)' }}>
+      <Navigation />
+      
       {/* Hero Background Image */}
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40"
@@ -50,18 +51,8 @@ const Christmas = () => {
           size={Math.random() > 0.7 ? 'w-4 h-4' : 'w-3 h-3'}
         />
       ))}
-      
-      {/* Navigation */}
-      <div className="relative z-10 p-6">
-        <Link to="/">
-          <Button variant="ghost" className="text-christmas-gold hover:text-christmas-gold/80 hover:bg-christmas-gold/10">
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Tillbaka till Huset Lumos
-          </Button>
-        </Link>
-      </div>
 
-      <div className="relative z-10 container mx-auto px-4 py-12">
+      <div className="relative z-10 container mx-auto px-4 py-12 pt-24">
         {/* Header */}
         <div className="text-center mb-16">
           <TreePine className="w-20 h-20 mx-auto text-christmas-secondary animate-gentle-glow christmas-glow mb-6" />

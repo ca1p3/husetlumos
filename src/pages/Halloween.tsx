@@ -1,8 +1,7 @@
-import { Link } from "react-router-dom";
 import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { ArrowLeft, Ghost, Skull, Moon, Zap } from "lucide-react";
+import { Ghost, Skull, Moon, Zap } from "lucide-react";
 import halloweenHero from "@/assets/halloween-hero.jpg";
+import { Navigation } from "@/components/Navigation";
 
 const SpookySpirit = ({ delay = 0 }: { delay?: number }) => (
   <div 
@@ -18,6 +17,8 @@ const SpookySpirit = ({ delay = 0 }: { delay?: number }) => (
 const Halloween = () => {
   return (
     <div className="min-h-screen relative overflow-hidden page-transition" style={{ background: 'var(--gradient-halloween)' }}>
+      <Navigation />
+      
       {/* Hero Background Image */}
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40"
@@ -29,18 +30,8 @@ const Halloween = () => {
       {Array.from({ length: 15 }, (_, i) => (
         <SpookySpirit key={i} delay={i * 0.3} />
       ))}
-      
-      {/* Navigation */}
-      <div className="relative z-10 p-6">
-        <Link to="/">
-          <Button variant="ghost" className="text-halloween hover:text-halloween/80 hover:bg-halloween/10">
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Tillbaka till Huset Lumos
-          </Button>
-        </Link>
-      </div>
 
-      <div className="relative z-10 container mx-auto px-4 py-12">
+      <div className="relative z-10 container mx-auto px-4 py-12 pt-24">
         {/* Header */}
         <div className="text-center mb-16">
           <Ghost className="w-20 h-20 mx-auto text-halloween animate-spookyFloat halloween-glow mb-6" />

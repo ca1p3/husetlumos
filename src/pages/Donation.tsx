@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Heart, ArrowLeft } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Heart } from "lucide-react";
+import { Navigation } from "@/components/Navigation";
 
 const Donation = () => {
   const swishNumber = "1234567890"; // Replace with actual Swish number
@@ -13,6 +13,8 @@ const Donation = () => {
 
   return (
     <div className="min-h-screen relative overflow-hidden page-transition bg-gradient-to-b from-background via-background/95 to-background">
+      <Navigation />
+      
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/10 via-background to-background" />
       
       {/* Floating magical lights */}
@@ -28,13 +30,7 @@ const Donation = () => {
         />
       ))}
 
-      <div className="relative z-10 container mx-auto px-4 py-16">
-        {/* Back Button */}
-        <Link to="/" className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors mb-8">
-          <ArrowLeft className="w-4 h-4" />
-          Tillbaka
-        </Link>
-
+      <div className="relative z-10 container mx-auto px-4 py-16 pt-24">
         <div className="max-w-2xl mx-auto">
           {/* Header */}
           <div className="text-center mb-12 animate-fadeInUp">
