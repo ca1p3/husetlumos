@@ -14,6 +14,23 @@ const SpookySpirit = ({ delay = 0 }: { delay?: number }) => (
   />
 );
 
+const FlyingBat = ({ delay = 0 }: { delay?: number }) => (
+  <svg 
+    className="absolute w-8 h-8 text-halloween animate-spookyFloat opacity-70"
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    style={{ 
+      animationDelay: `${delay}s`,
+      animationDuration: `${4 + Math.random() * 3}s`,
+      left: `${Math.random() * 100}%`,
+      top: `${Math.random() * 60}%`,
+      transform: Math.random() > 0.5 ? 'scaleX(-1)' : 'scaleX(1)'
+    }}
+  >
+    <path d="M12 2c1.5 0 2.5 1.5 2.5 3.5 0 .5-.1 1-.3 1.5 2.5-.5 4.8.5 6.3 2.5.5.7.5 1.5 0 2-.3.3-.7.5-1 .5 1 .5 1.5 1.5 1.5 2.5 0 1.5-1 3-3 3.5-.5 2-2 3.5-4 3.5-1.5 0-2.5-1-3-2-.5 1-1.5 2-3 2-2 0-3.5-1.5-4-3.5-2-.5-3-2-3-3.5 0-1 .5-2 1.5-2.5-.3 0-.7-.2-1-.5-.5-.5-.5-1.3 0-2 1.5-2 3.8-3 6.3-2.5-.2-.5-.3-1-.3-1.5C9.5 3.5 10.5 2 12 2z"/>
+  </svg>
+);
+
 const Halloween = () => {
   return (
     <div className="min-h-screen relative overflow-hidden page-transition" style={{ background: 'var(--gradient-halloween)' }}>
@@ -29,6 +46,11 @@ const Halloween = () => {
       {/* Floating spooky elements */}
       {Array.from({ length: 15 }, (_, i) => (
         <SpookySpirit key={i} delay={i * 0.3} />
+      ))}
+      
+      {/* Flying bats */}
+      {Array.from({ length: 8 }, (_, i) => (
+        <FlyingBat key={`bat-${i}`} delay={i * 0.5} />
       ))}
 
       <div className="relative z-10 container mx-auto px-4 py-12 pt-28">
