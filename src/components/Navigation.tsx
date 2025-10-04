@@ -23,7 +23,7 @@ export const Navigation = () => {
               <Button
                 variant={isActive("/") ? "default" : "ghost"}
                 size="sm"
-                className="gap-2 hover:scale-105 transition-transform"
+                className="gap-2 hover:scale-105 transition-transform nav-shimmer"
               >
                 <Home className="w-4 h-4" />
                 <span className="hidden sm:inline">Hem</span>
@@ -34,7 +34,7 @@ export const Navigation = () => {
               <Button
                 variant={isActive("/halloween") ? "default" : "ghost"}
                 size="sm"
-                className="gap-2 hover:scale-105 transition-transform"
+                className="gap-2 hover:scale-105 transition-transform nav-shimmer"
               >
                 <Ghost className="w-4 h-4" />
                 <span className="hidden sm:inline">Halloween</span>
@@ -45,7 +45,7 @@ export const Navigation = () => {
               <Button
                 variant={isActive("/christmas") ? "default" : "ghost"}
                 size="sm"
-                className="gap-2 hover:scale-105 transition-transform"
+                className="gap-2 hover:scale-105 transition-transform nav-shimmer"
               >
                 <Snowflake className="w-4 h-4" />
                 <span className="hidden sm:inline">Jul</span>
@@ -55,7 +55,7 @@ export const Navigation = () => {
             <Link to="/donation">
               <Button
                 size="sm"
-                className="gap-2 bg-primary text-primary-foreground hover:bg-primary/90 animate-pulse shadow-lg shadow-primary/50 hover:scale-110 transition-all font-bold"
+                className="gap-2 bg-primary text-primary-foreground hover:bg-primary/90 animate-pulse shadow-lg shadow-primary/50 hover:scale-110 transition-all font-bold nav-shimmer"
               >
                 <Heart className="w-4 h-4 fill-current" />
                 <span className="hidden sm:inline">Donera</span>
