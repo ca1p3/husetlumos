@@ -14,22 +14,25 @@ const SpookySpirit = ({ delay = 0 }: { delay?: number }) => (
   />
 );
 
-const FlyingBat = ({ delay = 0 }: { delay?: number }) => (
-  <svg 
-    className="absolute w-8 h-8 text-halloween animate-spookyFloat opacity-70"
-    viewBox="0 0 24 24"
-    fill="currentColor"
-    style={{ 
-      animationDelay: `${delay}s`,
-      animationDuration: `${4 + Math.random() * 3}s`,
-      left: `${Math.random() * 100}%`,
-      top: `${Math.random() * 60}%`,
-      transform: Math.random() > 0.5 ? 'scaleX(-1)' : 'scaleX(1)'
-    }}
-  >
-    <path d="M12 2c1.5 0 2.5 1.5 2.5 3.5 0 .5-.1 1-.3 1.5 2.5-.5 4.8.5 6.3 2.5.5.7.5 1.5 0 2-.3.3-.7.5-1 .5 1 .5 1.5 1.5 1.5 2.5 0 1.5-1 3-3 3.5-.5 2-2 3.5-4 3.5-1.5 0-2.5-1-3-2-.5 1-1.5 2-3 2-2 0-3.5-1.5-4-3.5-2-.5-3-2-3-3.5 0-1 .5-2 1.5-2.5-.3 0-.7-.2-1-.5-.5-.5-.5-1.3 0-2 1.5-2 3.8-3 6.3-2.5-.2-.5-.3-1-.3-1.5C9.5 3.5 10.5 2 12 2z"/>
-  </svg>
-);
+const FlyingBat = ({ delay = 0 }: { delay?: number }) => {
+  const size = Math.random() > 0.5 ? 'w-8 h-8' : 'w-6 h-6';
+  const topPosition = Math.random() * 40 + 10; // Random between 10-50%
+  
+  return (
+    <svg 
+      className={`absolute ${size} text-halloween opacity-70`}
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      style={{ 
+        top: `${topPosition}%`,
+        animation: `batFly ${15 + Math.random() * 10}s linear ${delay}s infinite, batFlap 0.3s ease-in-out infinite`,
+        filter: 'drop-shadow(0 0 8px hsl(24 100% 60% / 0.6))'
+      }}
+    >
+      <path d="M12 2c1.5 0 2.5 1.5 2.5 3.5 0 .5-.1 1-.3 1.5 2.5-.5 4.8.5 6.3 2.5.5.7.5 1.5 0 2-.3.3-.7.5-1 .5 1 .5 1.5 1.5 1.5 2.5 0 1.5-1 3-3 3.5-.5 2-2 3.5-4 3.5-1.5 0-2.5-1-3-2-.5 1-1.5 2-3 2-2 0-3.5-1.5-4-3.5-2-.5-3-2-3-3.5 0-1 .5-2 1.5-2.5-.3 0-.7-.2-1-.5-.5-.5-.5-1.3 0-2 1.5-2 3.8-3 6.3-2.5-.2-.5-.3-1-.3-1.5C9.5 3.5 10.5 2 12 2z"/>
+    </svg>
+  );
+};
 
 const Halloween = () => {
   return (
