@@ -36,7 +36,7 @@ const Index = () => {
       ))}
       
       {/* Hero Section */}
-      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 text-center">
+      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 text-center pt-16">
         <div className="mb-8 animate-fadeInUp">
           <div className="flex items-center justify-center mb-4">
             <Zap className="w-12 h-12 text-primary magical-glow mr-4" />

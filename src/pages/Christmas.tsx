@@ -52,7 +52,7 @@ const Christmas = () => {
         />
       ))}
 
-      <div className="relative z-10 container mx-auto px-4 py-12 pt-24">
+      <div className="relative z-10 container mx-auto px-4 py-12 pt-28">
         {/* Header */}
         <div className="text-center mb-16">
           <TreePine className="w-20 h-20 mx-auto text-christmas-secondary animate-gentle-glow christmas-glow mb-6" />

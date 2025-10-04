@@ -30,7 +30,7 @@ const Donation = () => {
         />
       ))}
 
-      <div className="relative z-10 container mx-auto px-4 py-16 pt-24">
+      <div className="relative z-10 container mx-auto px-4 py-16 pt-28">
         <div className="max-w-2xl mx-auto">
           {/* Header */}
           <div className="text-center mb-12 animate-fadeInUp">

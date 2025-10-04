@@ -31,7 +31,7 @@ const Halloween = () => {
         <SpookySpirit key={i} delay={i * 0.3} />
       ))}
 
-      <div className="relative z-10 container mx-auto px-4 py-12 pt-24">
+      <div className="relative z-10 container mx-auto px-4 py-12 pt-28">
         {/* Header */}
         <div className="text-center mb-16">
           <Ghost className="w-20 h-20 mx-auto text-halloween animate-spookyFloat halloween-glow mb-6" />
