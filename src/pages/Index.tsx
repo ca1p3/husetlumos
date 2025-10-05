@@ -41,11 +41,7 @@ const Index = () => {
           <div className="flex items-center justify-center mb-4">
             <Zap className="w-12 h-12 text-primary magical-glow mr-4" />
             <h1 className="text-6xl md:text-8xl font-bold bg-gradient-to-r from-primary via-halloween to-christmas-gold bg-clip-text text-transparent">
-              {"Huset Lumos".split("").map((letter, index) => (
-                <span key={index} className="letter-shimmer" style={{ animationDelay: `${index * 0.15}s` }}>
-                  {letter === " " ? "\u00A0" : letter}
-                </span>
-              ))}
+              Huset Lumos
             </h1>
           </div>
           <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl">
