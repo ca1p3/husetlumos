@@ -174,6 +174,21 @@
     animation: shimmer 4s infinite;
   }
 
+  .headline-magic {
+    position: relative;
+    animation: headlineGlow 3s ease-in-out infinite;
+    text-shadow: 0 0 20px hsl(47 96% 53% / 0.3), 0 0 40px hsl(24 100% 60% / 0.2);
+  }
+
+  .headline-magic::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    animation: shimmer 5s infinite;
+    pointer-events: none;
+  }
+
   .theme-card {
     transition: all 0.3s ease;
     position: relative;
@@ -261,5 +276,14 @@
   @keyframes spookyFloat {
     0%, 100% { transform: translateY(0px) rotate(-5deg); }
     50% { transform: translateY(-15px) rotate(5deg); }
+  }
+
+  @keyframes headlineGlow {
+    0%, 100% { 
+      filter: drop-shadow(0 0 20px hsl(47 96% 53% / 0.4)) brightness(1);
+    }
+    50% { 
+      filter: drop-shadow(0 0 40px hsl(47 96% 53% / 0.6)) brightness(1.1);
+    }
   }
 }

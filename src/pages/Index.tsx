@@ -40,7 +40,7 @@ const Index = () => {
         <div className="mb-8 animate-fadeInUp">
           <div className="flex items-center justify-center mb-4">
             <Zap className="w-12 h-12 text-primary magical-glow mr-4" />
-            <h1 className="text-6xl md:text-8xl font-bold bg-gradient-to-r from-primary via-halloween to-christmas-gold bg-clip-text text-transparent">
+            <h1 className="text-6xl md:text-8xl font-bold bg-gradient-to-r from-primary via-halloween to-christmas-gold bg-clip-text text-transparent headline-magic">
               Huset Lumos
             </h1>
           </div>
