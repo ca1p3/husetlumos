@@ -174,18 +174,22 @@
     animation: shimmer 4s infinite;
   }
 
-  .letter-glow {
+  .headline-shimmer {
+    position: relative;
+    overflow: hidden;
     display: inline-block;
-    animation: letterPulse 2s ease-in-out infinite;
-    text-shadow: 0 0 10px hsl(47 96% 53% / 0.5);
   }
 
-  .letter-glow:nth-child(odd) {
-    animation-delay: 0.1s;
-  }
-
-  .letter-glow:nth-child(even) {
-    animation-delay: 0.2s;
+  .headline-shimmer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    animation: shimmer 4s infinite;
+    pointer-events: none;
   }
 
   .theme-card {
@@ -277,14 +281,4 @@
     50% { transform: translateY(-15px) rotate(5deg); }
   }
 
-  @keyframes letterPulse {
-    0%, 100% { 
-      text-shadow: 0 0 10px hsl(47 96% 53% / 0.5), 0 0 20px hsl(24 100% 60% / 0.3);
-      filter: brightness(1);
-    }
-    50% { 
-      text-shadow: 0 0 20px hsl(47 96% 53% / 0.8), 0 0 40px hsl(24 100% 60% / 0.5);
-      filter: brightness(1.2);
-    }
-  }
 }
