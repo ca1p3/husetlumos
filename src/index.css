@@ -174,13 +174,13 @@
     animation: shimmer 4s infinite;
   }
 
-  .headline-shimmer {
+  .letter-shimmer {
     position: relative;
-    overflow: hidden;
     display: inline-block;
+    overflow: hidden;
   }
 
-  .headline-shimmer::before {
+  .letter-shimmer::before {
     content: '';
     position: absolute;
     top: 0;
