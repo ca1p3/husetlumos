@@ -45,9 +45,17 @@ const Index = () => {
       />
       <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/60 to-background/80" />
       
-      {/* Floating magical lights */}
+      {/* Floating magical lights - fixed to viewport */}
       {Array.from({ length: 12 }, (_, i) => (
-        <FloatingLight key={i} delay={i * 0.5} />
+        <div 
+          key={i}
+          className="fixed w-3 h-3 bg-primary rounded-full animate-float opacity-70 magical-glow pointer-events-none"
+          style={{ 
+            animationDelay: `${i * 0.5}s`,
+            left: `${Math.random() * 100}%`,
+            top: `${Math.random() * 100}%`
+          }}
+        />
       ))}
       
       {/* Sticky Donation Button */}

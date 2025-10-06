@@ -1,23 +1,29 @@
+import { Link } from "react-router-dom";
 import { Card } from "@/components/ui/card";
-import { Ghost, Skull, Moon, Zap } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Ghost, Skull, Moon, Zap, Heart } from "lucide-react";
 import halloweenHero from "@/assets/halloween-hero.jpg";
-import { Navigation } from "@/components/Navigation";
-
-const SpookySpirit = ({ delay = 0 }: { delay?: number }) => (
-  <div 
-    className="absolute w-4 h-4 bg-halloween rounded-full animate-spookyFloat opacity-60 halloween-glow"
-    style={{ 
-      animationDelay: `${delay}s`,
-      left: `${Math.random() * 100}%`,
-      top: `${Math.random() * 100}%`
-    }}
-  />
-);
+import { useEffect, useState } from "react";
 
 const Halloween = () => {
+  const [showStickyDonation, setShowStickyDonation] = useState(true);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const bottomDonation = document.getElementById('bottom-donation');
+      if (bottomDonation) {
+        const rect = bottomDonation.getBoundingClientRect();
+        setShowStickyDonation(rect.top > window.innerHeight);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
     <div className="min-h-screen relative overflow-hidden page-transition" style={{ background: 'var(--gradient-halloween)' }}>
-      <Navigation />
       
       {/* Hero Background Image */}
       <div 
@@ -26,12 +32,33 @@ const Halloween = () => {
       />
       <div className="absolute inset-0" style={{ background: 'var(--gradient-halloween)' }} />
       
-      {/* Floating spooky elements */}
+      {/* Floating spooky elements - fixed to viewport */}
       {Array.from({ length: 15 }, (_, i) => (
-        <SpookySpirit key={i} delay={i * 0.3} />
+        <div 
+          key={i}
+          className="fixed w-4 h-4 bg-halloween rounded-full animate-spookyFloat opacity-60 halloween-glow pointer-events-none"
+          style={{ 
+            animationDelay: `${i * 0.3}s`,
+            left: `${Math.random() * 100}%`,
+            top: `${Math.random() * 100}%`
+          }}
+        />
       ))}
 
-      <div className="relative z-10 container mx-auto px-4 py-12 pt-28">
+      {/* Sticky Donation Button */}
+      {showStickyDonation && (
+        <Link to="/donation" className="fixed top-4 right-4 z-50 animate-fade-in">
+          <Button
+            size="sm"
+            className="gap-2 bg-primary text-primary-foreground hover:bg-primary/90 animate-pulse shadow-lg shadow-primary/50 hover:scale-110 transition-all font-bold nav-shimmer"
+          >
+            <Heart className="w-4 h-4 fill-current" />
+            <span>Donera</span>
+          </Button>
+        </Link>
+      )}
+
+      <div className="relative z-10 container mx-auto px-4 py-16">
         {/* Header */}
         <div className="text-center mb-16">
           <Ghost className="w-20 h-20 mx-auto text-halloween animate-spookyFloat halloween-glow mb-6" />
@@ -100,7 +127,7 @@ const Halloween = () => {
         </div>
 
         {/* Show Schedule */}
-        <div className="mt-16 text-center">
+        <div id="bottom-donation" className="mt-16 text-center">
           <h2 className="text-3xl font-bold text-halloween mb-8">Show-schema</h2>
           <div className="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto">
             <Card className="bg-halloween-dark/80 backdrop-blur-sm border-halloween/30 p-6">

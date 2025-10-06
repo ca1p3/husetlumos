@@ -1,7 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Heart } from "lucide-react";
-import { Navigation } from "@/components/Navigation";
 
 const Donation = () => {
   const swishNumber = "1234567890"; // Replace with actual Swish number
@@ -13,15 +12,14 @@ const Donation = () => {
 
   return (
     <div className="min-h-screen relative overflow-hidden page-transition bg-gradient-to-b from-background via-background/95 to-background">
-      <Navigation />
       
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/10 via-background to-background" />
       
-      {/* Floating magical lights */}
+      {/* Floating magical lights - fixed to viewport */}
       {Array.from({ length: 8 }, (_, i) => (
         <div 
           key={i}
-          className="absolute w-3 h-3 bg-primary rounded-full animate-float opacity-70 magical-glow"
+          className="fixed w-3 h-3 bg-primary rounded-full animate-float opacity-70 magical-glow pointer-events-none"
           style={{ 
             animationDelay: `${i * 0.5}s`,
             left: `${Math.random() * 100}%`,
@@ -30,7 +28,7 @@ const Donation = () => {
         />
       ))}
 
-      <div className="relative z-10 container mx-auto px-4 py-16 pt-28">
+      <div className="relative z-10 container mx-auto px-4 py-16">
         <div className="max-w-2xl mx-auto">
           {/* Header */}
           <div className="text-center mb-12 animate-fadeInUp">
