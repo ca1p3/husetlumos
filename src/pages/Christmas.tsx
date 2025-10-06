@@ -70,7 +70,7 @@ const Christmas = () => {
       {/* Sticky Donation Button */}
       <div className="fixed top-6 right-6 z-50">
         <Link to="/donation">
-          <Button className="bg-christmas-gold text-christmas-dark hover:bg-christmas-gold/90 shadow-lg">
+          <Button className="bg-christmas-gold text-christmas-dark hover:bg-christmas-gold/90 shadow-lg christmas-glow animate-gentle-glow">
             <Heart className="w-4 h-4 mr-2" />
             Donera
           </Button>

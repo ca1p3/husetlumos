@@ -49,7 +49,7 @@ const Halloween = () => {
       {/* Sticky Donation Button */}
       <div className="fixed top-6 right-6 z-50">
         <Link to="/donation">
-          <Button className="bg-halloween text-foreground hover:bg-halloween/90 shadow-lg">
+          <Button className="bg-halloween text-foreground hover:bg-halloween/90 shadow-lg halloween-glow animate-spookyFloat">
             <Heart className="w-4 h-4 mr-2" />
             Donera
           </Button>
