@@ -1,30 +1,35 @@
 import { Link } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { TreePine, Star, Gift, Snowflake as SnowflakeIcon, Heart } from "lucide-react";
+import { ArrowLeft, TreePine, Star, Gift, Snowflake as SnowflakeIcon } from "lucide-react";
 import christmasHero from "@/assets/christmas-hero.jpg";
-import { useEffect, useState } from "react";
+
+const TwinklingLight = ({ delay = 0 }: { delay?: number }) => (
+  <div 
+    className="absolute w-2 h-2 bg-christmas-gold rounded-full animate-twinkle opacity-80"
+    style={{ 
+      animationDelay: `${delay}s`,
+      left: `${Math.random() * 100}%`,
+      top: `${Math.random() * 100}%`,
+      boxShadow: '0 0 10px hsl(var(--christmas-gold))'
+    }}
+  />
+);
+
+const Snowflake = ({ delay = 0, size = 'w-3 h-3' }: { delay?: number; size?: string }) => (
+  <SnowflakeIcon 
+    className={`absolute ${size} text-white animate-snowfall opacity-60`}
+    style={{ 
+      animationDelay: `${delay}s`,
+      animationDuration: `${8 + Math.random() * 4}s`,
+      left: `${Math.random() * 100}%`,
+    }}
+  />
+);
 
 const Christmas = () => {
-  const [showStickyDonation, setShowStickyDonation] = useState(true);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const bottomDonation = document.getElementById('bottom-donation');
-      if (bottomDonation) {
-        const rect = bottomDonation.getBoundingClientRect();
-        setShowStickyDonation(rect.top > window.innerHeight);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
   return (
     <div className="min-h-screen relative overflow-hidden page-transition" style={{ background: 'var(--gradient-christmas)' }}>
-      
       {/* Hero Background Image */}
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40"
@@ -32,47 +37,31 @@ const Christmas = () => {
       />
       <div className="absolute inset-0" style={{ background: 'var(--gradient-christmas)' }} />
       
-      {/* Twinkling lights - fixed to viewport */}
+      {/* Twinkling lights */}
       {Array.from({ length: 20 }, (_, i) => (
-        <div 
-          key={`light-${i}`}
-          className="fixed w-2 h-2 bg-christmas-gold rounded-full animate-twinkle opacity-80 pointer-events-none"
-          style={{ 
-            animationDelay: `${i * 0.2}s`,
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
-            boxShadow: '0 0 10px hsl(var(--christmas-gold))'
-          }}
-        />
+        <TwinklingLight key={`light-${i}`} delay={i * 0.2} />
       ))}
       
       {/* Falling snow */}
       {Array.from({ length: 30 }, (_, i) => (
-        <SnowflakeIcon 
-          key={`snow-${i}`}
-          className={`fixed ${Math.random() > 0.7 ? 'w-4 h-4' : 'w-3 h-3'} text-white animate-snowfall opacity-60 pointer-events-none`}
-          style={{ 
-            animationDelay: `${i * 0.1}s`,
-            animationDuration: `${8 + Math.random() * 4}s`,
-            left: `${Math.random() * 100}%`,
-          }}
+        <Snowflake 
+          key={`snow-${i}`} 
+          delay={i * 0.1} 
+          size={Math.random() > 0.7 ? 'w-4 h-4' : 'w-3 h-3'}
         />
       ))}
-
-      {/* Sticky Donation Button */}
-      {showStickyDonation && (
-        <Link to="/donation" className="fixed top-4 right-4 z-50 animate-fade-in">
-          <Button
-            size="sm"
-            className="gap-2 bg-primary text-primary-foreground hover:bg-primary/90 animate-pulse shadow-lg shadow-primary/50 hover:scale-110 transition-all font-bold nav-shimmer"
-          >
-            <Heart className="w-4 h-4 fill-current" />
-            <span>Donera</span>
+      
+      {/* Navigation */}
+      <div className="relative z-10 p-6">
+        <Link to="/">
+          <Button variant="ghost" className="text-christmas-gold hover:text-christmas-gold/80 hover:bg-christmas-gold/10">
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Tillbaka till Huset Lumos
           </Button>
         </Link>
-      )}
+      </div>
 
-      <div className="relative z-10 container mx-auto px-4 py-16">
+      <div className="relative z-10 container mx-auto px-4 py-12">
         {/* Header */}
         <div className="text-center mb-16">
           <TreePine className="w-20 h-20 mx-auto text-christmas-secondary animate-gentle-glow christmas-glow mb-6" />
@@ -143,7 +132,7 @@ const Christmas = () => {
         </div>
 
         {/* Show Schedule */}
-        <div id="bottom-donation" className="mt-16 text-center">
+        <div className="mt-16 text-center">
           <h2 className="text-3xl font-bold text-christmas-gold mb-8">Show-schema</h2>
           <div className="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto">
             <Card className="bg-christmas-dark/80 backdrop-blur-sm border-christmas-gold/30 p-6">

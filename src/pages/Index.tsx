@@ -5,7 +5,6 @@ import { Ghost, TreePine, Zap, Heart } from "lucide-react";
 import heroImage from "@/assets/huset-lumos-hero.jpg";
 import LiveStatus from "@/components/LiveStatus";
 import Schedule from "@/components/Schedule";
-import { useEffect, useState } from "react";
 
 const FloatingLight = ({ delay = 0 }: { delay?: number }) => (
   <div 
@@ -19,25 +18,8 @@ const FloatingLight = ({ delay = 0 }: { delay?: number }) => (
 );
 
 const Index = () => {
-  const [showStickyDonation, setShowStickyDonation] = useState(true);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const bottomDonation = document.getElementById('bottom-donation');
-      if (bottomDonation) {
-        const rect = bottomDonation.getBoundingClientRect();
-        setShowStickyDonation(rect.top > window.innerHeight);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
   return (
     <div className="min-h-screen relative overflow-hidden page-transition">
-      
       {/* Hero Background Image */}
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-30"
@@ -45,34 +27,13 @@ const Index = () => {
       />
       <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/60 to-background/80" />
       
-      {/* Floating magical lights - fixed to viewport */}
+      {/* Floating magical lights */}
       {Array.from({ length: 12 }, (_, i) => (
-        <div 
-          key={i}
-          className="fixed w-3 h-3 bg-primary rounded-full animate-float opacity-70 magical-glow pointer-events-none"
-          style={{ 
-            animationDelay: `${i * 0.5}s`,
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`
-          }}
-        />
+        <FloatingLight key={i} delay={i * 0.5} />
       ))}
       
-      {/* Sticky Donation Button */}
-      {showStickyDonation && (
-        <Link to="/donation" className="fixed top-4 right-4 z-50 animate-fade-in">
-          <Button
-            size="sm"
-            className="gap-2 bg-primary text-primary-foreground hover:bg-primary/90 animate-pulse shadow-lg shadow-primary/50 hover:scale-110 transition-all font-bold nav-shimmer"
-          >
-            <Heart className="w-4 h-4 fill-current" />
-            <span>Donera</span>
-          </Button>
-        </Link>
-      )}
-
       {/* Hero Section */}
-      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 text-center py-16">
+      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 text-center">
         <div className="mb-8 animate-fadeInUp">
           <div className="flex items-center justify-center mb-4">
             <Zap className="w-12 h-12 text-primary magical-glow mr-4" />
@@ -135,7 +96,7 @@ const Index = () => {
         </div>
 
         {/* Donation Button */}
-        <div id="bottom-donation" className="mt-12 text-center">
+        <div className="mt-12 text-center">
           <Link to="/donation">
             <Button variant="outline" className="sparkle border-primary text-primary hover:bg-primary hover:text-primary-foreground px-8 py-6 text-lg">
               <Heart className="w-5 h-5 mr-2" />
