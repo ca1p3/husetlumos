@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, TreePine, Star, Gift, Snowflake as SnowflakeIcon } from "lucide-react";
+import { ArrowLeft, TreePine, Star, Gift, Snowflake as SnowflakeIcon, Heart } from "lucide-react";
 import christmasHero from "@/assets/christmas-hero.jpg";
 
 const TwinklingLight = ({ delay = 0 }: { delay?: number }) => (
@@ -16,7 +16,7 @@ const TwinklingLight = ({ delay = 0 }: { delay?: number }) => (
   />
 );
 
-const Snowflake = ({ delay = 0, size = 'w-3 h-3' }: { delay?: number; size?: string }) => (
+const Snowflake = ({ delay = 0, size = 'w-6 h-6' }: { delay?: number; size?: string }) => (
   <SnowflakeIcon 
     className={`absolute ${size} text-white animate-snowfall opacity-60`}
     style={{ 
@@ -47,16 +47,32 @@ const Christmas = () => {
         <Snowflake 
           key={`snow-${i}`} 
           delay={i * 0.1} 
-          size={Math.random() > 0.7 ? 'w-4 h-4' : 'w-3 h-3'}
+          size={Math.random() > 0.7 ? 'w-8 h-8' : 'w-6 h-6'}
         />
       ))}
       
       {/* Navigation */}
-      <div className="relative z-10 p-6">
+      <div className="relative z-10 p-6 flex justify-between items-center">
         <Link to="/">
           <Button variant="ghost" className="text-christmas-gold hover:text-christmas-gold/80 hover:bg-christmas-gold/10">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Tillbaka till Huset Lumos
+          </Button>
+        </Link>
+        <Link to="/donation">
+          <Button className="bg-christmas-gold text-christmas-dark hover:bg-christmas-gold/90">
+            <Heart className="w-4 h-4 mr-2" />
+            Donera
+          </Button>
+        </Link>
+      </div>
+      
+      {/* Sticky Donation Button */}
+      <div className="fixed top-6 right-6 z-50">
+        <Link to="/donation">
+          <Button className="bg-christmas-gold text-christmas-dark hover:bg-christmas-gold/90 shadow-lg">
+            <Heart className="w-4 h-4 mr-2" />
+            Donera
           </Button>
         </Link>
       </div>

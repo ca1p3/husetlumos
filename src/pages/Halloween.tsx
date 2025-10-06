@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Ghost, Skull, Moon, Zap } from "lucide-react";
+import { ArrowLeft, Ghost, Skull, Moon, Zap, Heart } from "lucide-react";
 import halloweenHero from "@/assets/halloween-hero.jpg";
 
 const SpookySpirit = ({ delay = 0 }: { delay?: number }) => (
@@ -31,11 +31,27 @@ const Halloween = () => {
       ))}
       
       {/* Navigation */}
-      <div className="relative z-10 p-6">
+      <div className="relative z-10 p-6 flex justify-between items-center">
         <Link to="/">
           <Button variant="ghost" className="text-halloween hover:text-halloween/80 hover:bg-halloween/10">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Tillbaka till Huset Lumos
+          </Button>
+        </Link>
+        <Link to="/donation">
+          <Button className="bg-halloween text-foreground hover:bg-halloween/90">
+            <Heart className="w-4 h-4 mr-2" />
+            Donera
+          </Button>
+        </Link>
+      </div>
+      
+      {/* Sticky Donation Button */}
+      <div className="fixed top-6 right-6 z-50">
+        <Link to="/donation">
+          <Button className="bg-halloween text-foreground hover:bg-halloween/90 shadow-lg">
+            <Heart className="w-4 h-4 mr-2" />
+            Donera
           </Button>
         </Link>
       </div>
