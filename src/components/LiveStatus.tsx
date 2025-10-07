@@ -29,6 +29,20 @@ interface FPPStatus {
   };
 }
 
+interface PlaylistEntry {
+  sequenceName: string;
+  type: string;
+}
+
+interface PlaylistDetails {
+  name: string;
+  playlistInfo: {
+    total_duration: number;
+    total_items: number;
+  };
+  mainPlaylist: PlaylistEntry[];
+}
+
 interface ShowInfo {
   name: string;
   isLive: boolean;
@@ -45,6 +59,9 @@ const LiveStatus = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [fppStatus, setFppStatus] = useState<FPPStatus | null>(null);
   const [countdown, setCountdown] = useState<string>("");
+  const [playlistDetails, setPlaylistDetails] = useState<PlaylistDetails | null>(null);
+  const [lastUpdateTime, setLastUpdateTime] = useState<number>(Date.now());
+  const [baseSecondsPlayed, setBaseSecondsPlayed] = useState<number>(0);
   
   useEffect(() => {
     const timer = setInterval(() => {
@@ -60,6 +77,21 @@ const LiveStatus = () => {
         const response = await fetch('https://fpp.rodbettan.org/api/fppd/status');
         const data = await response.json();
         setFppStatus(data);
+        setLastUpdateTime(Date.now());
+        setBaseSecondsPlayed(data.seconds_played || 0);
+        
+        // Fetch playlist details if currently playing
+        if (data.status_name === 'playing' && data.current_playlist?.playlist) {
+          try {
+            const playlistResponse = await fetch(`https://fpp.rodbettan.org/api/playlist/${data.current_playlist.playlist}`);
+            const playlistData = await playlistResponse.json();
+            setPlaylistDetails(playlistData);
+          } catch (error) {
+            console.error('Failed to fetch playlist details:', error);
+          }
+        } else {
+          setPlaylistDetails(null);
+        }
       } catch (error) {
         console.error('Failed to fetch FPP status:', error);
       }
@@ -107,16 +139,36 @@ const LiveStatus = () => {
   const getShowStatus = (): ShowInfo => {
     const isPlaying = fppStatus?.status_name === "playing";
     const currentSequence = fppStatus?.current_sequence || fppStatus?.current_playlist?.description || "";
-    const secondsPlayed = fppStatus?.seconds_played || 0;
-    const secondsRemaining = fppStatus?.seconds_remaining || 0;
+    
+    // Calculate real-time progress
+    let secondsPlayed = baseSecondsPlayed;
+    let secondsRemaining = fppStatus?.seconds_remaining || 0;
+    
+    if (isPlaying) {
+      const elapsedSinceUpdate = (Date.now() - lastUpdateTime) / 1000;
+      secondsPlayed = baseSecondsPlayed + elapsedSinceUpdate;
+      secondsRemaining = Math.max(0, secondsRemaining - elapsedSinceUpdate);
+    }
+    
     const totalSeconds = secondsPlayed + secondsRemaining;
     const progress = totalSeconds > 0 ? (secondsPlayed / totalSeconds) * 100 : 0;
+    
+    // Get next sequence from playlist
+    let nextSequenceName = "";
+    if (isPlaying && playlistDetails && currentSequence) {
+      const currentIndex = playlistDetails.mainPlaylist.findIndex(
+        entry => entry.sequenceName === currentSequence
+      );
+      if (currentIndex !== -1 && currentIndex < playlistDetails.mainPlaylist.length - 1) {
+        nextSequenceName = playlistDetails.mainPlaylist[currentIndex + 1].sequenceName;
+      }
+    }
     
     // Get next show info from scheduler
     const nextPlaylistName = fppStatus?.scheduler?.nextPlaylist?.playlistName || "";
     
     const nextShowInfo = isPlaying
-      ? (nextPlaylistName ? `Nästa: ${nextPlaylistName}` : "")
+      ? (nextPlaylistName ? `Nästa show: ${nextPlaylistName}` : "")
       : nextPlaylistName
         ? `Nästa: ${nextPlaylistName}`
         : "";
@@ -125,12 +177,12 @@ const LiveStatus = () => {
       name: "Ljusshow",
       isLive: isPlaying,
       currentSequence: isPlaying ? currentSequence : "Väntar på start",
-      nextSequence: isPlaying ? "Laddar..." : "",
+      nextSequence: isPlaying && nextSequenceName ? `Nästa: ${nextSequenceName}` : "",
       nextShow: nextShowInfo,
       icon: <Sparkles className="w-5 h-5" />,
       theme: "default",
       progress: isPlaying ? progress : undefined,
-      secondsRemaining: isPlaying ? secondsRemaining : undefined
+      secondsRemaining: isPlaying ? Math.round(secondsRemaining) : undefined
     };
   };
 
@@ -185,6 +237,9 @@ const LiveStatus = () => {
                   <div className={`font-semibold text-base ${showInfo.isLive ? 'text-primary' : 'text-foreground/70'}`}>
                     {showInfo.isLive ? `♫ ${showInfo.currentSequence}` : showInfo.currentSequence}
                   </div>
+                )}
+                {showInfo.nextSequence && (
+                  <div className="text-sm text-muted-foreground">{showInfo.nextSequence}</div>
                 )}
                 {showInfo.nextShow && (
                   <div className="text-sm text-muted-foreground">{showInfo.nextShow}</div>
