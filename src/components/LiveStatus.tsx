@@ -41,20 +41,9 @@ interface ShowInfo {
   secondsRemaining?: number;
 }
 
-interface ScheduleItem {
-  enabled: number;
-  playlist: string;
-  startDate: string;
-  endDate: string;
-  startTime: string;
-  endTime: string;
-  day: number;
-}
-
 const LiveStatus = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [fppStatus, setFppStatus] = useState<FPPStatus | null>(null);
-  const [schedule, setSchedule] = useState<ScheduleItem[]>([]);
   const [countdown, setCountdown] = useState<string>("");
   
   useEffect(() => {
@@ -78,23 +67,6 @@ const LiveStatus = () => {
 
     fetchFPPStatus();
     const interval = setInterval(fetchFPPStatus, 2000);
-    
-    return () => clearInterval(interval);
-  }, []);
-
-  useEffect(() => {
-    const fetchSchedule = async () => {
-      try {
-        const response = await fetch('https://fpp.rodbettan.org/api/schedule');
-        const data = await response.json();
-        setSchedule(data.filter((item: ScheduleItem) => item.enabled === 1));
-      } catch (error) {
-        console.error('Failed to fetch schedule:', error);
-      }
-    };
-
-    fetchSchedule();
-    const interval = setInterval(fetchSchedule, 60000);
     
     return () => clearInterval(interval);
   }, []);
@@ -132,25 +104,6 @@ const LiveStatus = () => {
     return () => clearInterval(interval);
   }, [fppStatus]);
 
-  const getUpcomingPlaylist = (): string => {
-    if (schedule.length === 0) return "";
-    
-    const now = new Date();
-    const currentDate = now.toISOString().split('T')[0];
-    
-    // Find playlists that are currently active or upcoming
-    const activeOrUpcoming = schedule.filter(item => {
-      return item.startDate <= currentDate && item.endDate >= currentDate;
-    });
-    
-    if (activeOrUpcoming.length > 0) {
-      // Return the first active playlist name
-      return activeOrUpcoming[0].playlist;
-    }
-    
-    return "";
-  };
-
   const getShowStatus = (): ShowInfo => {
     const isPlaying = fppStatus?.status_name === "playing";
     const currentSequence = fppStatus?.current_sequence || fppStatus?.current_playlist?.description || "";
@@ -159,10 +112,14 @@ const LiveStatus = () => {
     const totalSeconds = secondsPlayed + secondsRemaining;
     const progress = totalSeconds > 0 ? (secondsPlayed / totalSeconds) * 100 : 0;
     
-    // Get upcoming playlist from schedule
-    const upcomingPlaylist = getUpcomingPlaylist();
+    // Get next show info from scheduler
+    const nextPlaylistName = fppStatus?.scheduler?.nextPlaylist?.playlistName || "";
     
-    const nextShowInfo = upcomingPlaylist ? `Nästa: ${upcomingPlaylist}` : "";
+    const nextShowInfo = isPlaying
+      ? (nextPlaylistName ? `Nästa: ${nextPlaylistName}` : "")
+      : nextPlaylistName
+        ? `Nästa: ${nextPlaylistName}`
+        : "";
         
     return {
       name: "Ljusshow",
