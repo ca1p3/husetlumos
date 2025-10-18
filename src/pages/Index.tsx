@@ -59,8 +59,8 @@ const Index = () => {
         {/* Theme Navigation Cards */}
         <div className="grid md:grid-cols-2 gap-8 max-w-4xl w-full">
           {/* Halloween Card */}
-          <Link to="/halloween" className="group">
-            <Card className="theme-card p-8 bg-card/50 backdrop-blur-sm border-2 border-halloween/30 hover:border-halloween/60 h-full relative overflow-hidden">
+          <div className="group">
+            <Card className="theme-card p-8 bg-card/50 backdrop-blur-sm border-2 border-halloween/30 h-full relative overflow-hidden cursor-not-allowed">
               {/* Construction Tape Overlay */}
               <div className="absolute inset-0 pointer-events-none z-10">
                 <div className="absolute top-12 left-0 w-full h-12 bg-gradient-to-r from-yellow-400/0 via-yellow-400/90 to-yellow-400/0 transform -rotate-12 flex items-center justify-center">
@@ -90,7 +90,7 @@ const Index = () => {
                 </Button>
               </div>
             </Card>
-          </Link>
+          </div>
 
           {/* Christmas Card */}
           <Link to="/christmas" className="group">
