@@ -60,17 +60,33 @@ const Index = () => {
         <div className="grid md:grid-cols-2 gap-8 max-w-4xl w-full">
           {/* Halloween Card */}
           <Link to="/halloween" className="group">
-            <Card className="theme-card p-8 bg-card/50 backdrop-blur-sm border-2 border-halloween/30 hover:border-halloween/60 h-full">
-              <div className="text-center space-y-4 flex flex-col justify-between min-h-[320px]">
-                <div className="space-y-4">
-                  <Ghost className="w-16 h-16 mx-auto text-halloween animate-spookyFloat halloween-glow" />
-                  <h2 className="text-3xl font-bold text-halloween">Halloween Show</h2>
-                  <p className="text-muted-foreground min-h-[3rem] flex items-center justify-center">
-                    Spöklika ljus, kusliga animationer och hemsökta uppvisningar som för Halloween-andan till liv
-                  </p>
+            <Card className="theme-card p-8 bg-card/50 backdrop-blur-sm border-2 border-halloween/30 hover:border-halloween/60 h-full relative overflow-hidden">
+              {/* Construction Tape Overlay */}
+              <div className="absolute inset-0 pointer-events-none z-10">
+                <div className="absolute top-12 left-0 w-full h-12 bg-gradient-to-r from-yellow-400/0 via-yellow-400/90 to-yellow-400/0 transform -rotate-12 flex items-center justify-center">
+                  <div className="text-black font-bold text-sm tracking-wider whitespace-nowrap">
+                    ⚠ UNDER KONSTRUKTION ⚠ UNDER KONSTRUKTION ⚠ UNDER KONSTRUKTION ⚠
+                  </div>
                 </div>
-                <Button variant="outline" className="sparkle border-halloween text-halloween hover:bg-halloween hover:text-halloween-dark">
-                  Gå in i den hemsökta upplevelsen
+              </div>
+              
+              <div className="text-center space-y-4 flex flex-col justify-between min-h-[320px] relative">
+                <div className="space-y-4">
+                  <div className="relative inline-block mx-auto opacity-50">
+                    <Ghost className="w-16 h-16 text-halloween" />
+                  </div>
+                  <h2 className="text-3xl font-bold text-halloween">Halloween Show</h2>
+                  <div className="space-y-2">
+                    <p className="text-muted-foreground min-h-[3rem] flex items-center justify-center">
+                      Ingen Halloween-show i år, men vi planerar att återvända 2026!
+                    </p>
+                    <p className="text-sm text-yellow-500 font-semibold">
+                      🚧 Under konstruktion
+                    </p>
+                  </div>
+                </div>
+                <Button variant="outline" className="border-halloween/50 text-halloween/50 cursor-not-allowed opacity-50" disabled>
+                  Kommer 2026
                 </Button>
               </div>
             </Card>
