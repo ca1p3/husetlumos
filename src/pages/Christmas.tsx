@@ -96,8 +96,8 @@ const Christmas = () => {
             <Star className="w-12 h-12 text-christmas-gold mb-4 animate-gentle-glow" />
             <h3 className="text-2xl font-bold text-christmas-gold mb-2">Magiska Projektioner</h3>
             <p className="text-green-100">
-              Förtrollande vinterscener och holiday-bilder projicerade över 
-              ytor, skapar ett uppslukande underland
+              AtmosFX-projektioner på fönster som skapar en illusionistisk upplevelse 
+              där julscener verkar utspela sig inne i huset
             </p>
           </Card>
 
@@ -112,10 +112,10 @@ const Christmas = () => {
 
           <Card className="bg-christmas-dark/80 backdrop-blur-sm border-christmas-gold/30 p-6">
             <SnowflakeIcon className="w-12 h-12 text-christmas-secondary mb-4 animate-gentle-glow" />
-            <h3 className="text-2xl font-bold text-christmas-secondary mb-2">Vinter Effekter</h3>
+            <h3 className="text-2xl font-bold text-christmas-secondary mb-2">Uppblåsbara Figurer</h3>
             <p className="text-green-100">
-              Simulerat snöfall, frost-mönster och glittrande istappar 
-              skapar en autentisk vinter-underland atmosfär
+              Charmiga uppblåsbara tomte- och snögubbs-figurer som lägger till 
+              en lekfull och festlig touch till uppvisningen
             </p>
           </Card>
         </div>
