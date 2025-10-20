@@ -113,8 +113,7 @@ const Christmas = () => {
             <SnowflakeIcon className="w-12 h-12 text-christmas-secondary mb-4 animate-gentle-glow" />
             <h3 className="text-2xl font-bold text-christmas-secondary mb-2">Uppblåsbara Figurer</h3>
             <p className="text-green-100">
-              Charmiga uppblåsbara tomte- och snögubbs-figurer som lägger till 
-              en lekfull och festlig touch till uppvisningen
+              Utanför huset står vår stora uppblåsbara tomte och snögubbe och hälsar glatt! Kom gärna fram och ta en rolig bild tillsammans med dem – de älskar att posa med alla barn som kommer på besök.
             </p>
           </Card>
         </div>
