@@ -96,7 +96,7 @@ const Christmas = () => {
             <Star className="w-12 h-12 text-christmas-gold mb-4 animate-gentle-glow" />
             <h3 className="text-2xl font-bold text-christmas-gold mb-2">Magiska Projektioner</h3>
             <p className="text-green-100">
-              Vid fönstret kan man kika rakt in i en magisk värld – ibland syns tomtens verkstad där nissarna jobbar för fullt, ibland något helt annat som bara dyker upp när mörkret faller. Det är som om huset öppnar en hemlig port till fantastiska platser, mitt framför ögonen på dig.
+              Vid fönstret kan du kika rakt in i Nordpolen – där snögubbar dansar, pepparkakor busar och tomten förbereder sig inför julen!
             </p>
           </Card>
 
