@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, TreePine, Star, Gift, Snowflake as SnowflakeIcon, Heart } from "lucide-react";
+import { ArrowLeft, TreePine, Star, Gift, Snowflake as SnowflakeIcon, Heart, MapPin } from "lucide-react";
 import christmasHero from "@/assets/christmas-hero.jpg";
 
 const TwinklingLight = ({ delay = 0 }: { delay?: number }) => (
@@ -59,16 +59,30 @@ const Christmas = () => {
             Tillbaka till Huset Lumos
           </Button>
         </Link>
-        <Link to="/donation">
-          <Button className="bg-christmas-gold text-christmas-dark hover:bg-christmas-gold/90">
-            <Heart className="w-4 h-4 mr-2" />
-            Donera
-          </Button>
-        </Link>
+        <div className="flex gap-2">
+          <Link to="/contact">
+            <Button className="bg-christmas-gold text-christmas-dark hover:bg-christmas-gold/90">
+              <MapPin className="w-4 h-4 mr-2" />
+              Kontakt
+            </Button>
+          </Link>
+          <Link to="/donation">
+            <Button className="bg-christmas-gold text-christmas-dark hover:bg-christmas-gold/90">
+              <Heart className="w-4 h-4 mr-2" />
+              Donera
+            </Button>
+          </Link>
+        </div>
       </div>
       
-      {/* Sticky Donation Button */}
-      <div className="fixed top-6 right-6 z-50">
+      {/* Sticky Buttons */}
+      <div className="fixed top-6 right-6 z-50 flex gap-2">
+        <Link to="/contact">
+          <Button className="bg-christmas-gold text-christmas-dark hover:bg-christmas-gold/90 shadow-lg christmas-glow animate-gentle-glow">
+            <MapPin className="w-4 h-4 mr-2" />
+            Kontakt
+          </Button>
+        </Link>
         <Link to="/donation">
           <Button className="bg-christmas-gold text-christmas-dark hover:bg-christmas-gold/90 shadow-lg christmas-glow animate-gentle-glow">
             <Heart className="w-4 h-4 mr-2" />

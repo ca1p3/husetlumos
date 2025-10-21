@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Ghost, Skull, Moon, Zap, Heart } from "lucide-react";
+import { ArrowLeft, Ghost, Skull, Moon, Zap, Heart, MapPin } from "lucide-react";
 import halloweenHero from "@/assets/halloween-hero.jpg";
 
 const SpookySpirit = ({ delay = 0 }: { delay?: number }) => (
@@ -38,16 +38,30 @@ const Halloween = () => {
             Tillbaka till Huset Lumos
           </Button>
         </Link>
-        <Link to="/donation">
-          <Button className="bg-halloween text-foreground hover:bg-halloween/90">
-            <Heart className="w-4 h-4 mr-2" />
-            Donera
-          </Button>
-        </Link>
+        <div className="flex gap-2">
+          <Link to="/contact">
+            <Button className="bg-halloween text-foreground hover:bg-halloween/90">
+              <MapPin className="w-4 h-4 mr-2" />
+              Kontakt
+            </Button>
+          </Link>
+          <Link to="/donation">
+            <Button className="bg-halloween text-foreground hover:bg-halloween/90">
+              <Heart className="w-4 h-4 mr-2" />
+              Donera
+            </Button>
+          </Link>
+        </div>
       </div>
       
-      {/* Sticky Donation Button */}
-      <div className="fixed top-6 right-6 z-50">
+      {/* Sticky Buttons */}
+      <div className="fixed top-6 right-6 z-50 flex gap-2">
+        <Link to="/contact">
+          <Button className="bg-halloween text-foreground hover:bg-halloween/90 shadow-lg halloween-glow animate-spookyFloat">
+            <MapPin className="w-4 h-4 mr-2" />
+            Kontakt
+          </Button>
+        </Link>
         <Link to="/donation">
           <Button className="bg-halloween text-foreground hover:bg-halloween/90 shadow-lg halloween-glow animate-spookyFloat">
             <Heart className="w-4 h-4 mr-2" />
