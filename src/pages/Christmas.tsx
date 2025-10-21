@@ -124,22 +124,13 @@ const Christmas = () => {
             <h2 className="text-3xl font-bold text-christmas-gold mb-6">Upplevelsen</h2>
             <div className="space-y-4 text-green-100">
               <p>
-                Vår jul-ljusshow är en firande av säsongens värme och glädje, 
-                med tusentals LED-ljus orkestrerade i perfekt harmoni med 
-                klassisk julmusik. Displayen förvandlar vilket utrymme som helst till ett magiskt 
-                vinter-underland som fångar julens hjärta.
+                Vår julshow är en magisk upplevelse för hela familjen – fylld med färg, musik och glädje! Tusentals ljus dansar i takt till både klassiska julsånger och moderna favoriter som alla kan sjunga med i. Tillsammans förvandlar de huset till ett levande vinterland fullt av överraskningar och stämning.
               </p>
               <p>
-                Från mjuka snöfall-effekter som dansar med mjuka blå och vita ljus 
-                till jublande sekvenser med röda och gröna utbrott synkroniserade med 
-                "Bjällerklang," varje ögonblick är skapat för att framkalla förundran och glädje 
-                av julsäsongen.
+                Mellan showerna kan ni kika in genom fönstret och se vad som händer på Nordpolen – kanske får ni en glimt av tomten, nissarna eller dansande snögubbar! Utanför väntar också vår stora uppblåsbara tomte och snögubbe som gärna ställer upp på en rolig familjebild.
               </p>
               <p>
-                Den 30-minuters långa showen tar dig på en resa från fridfulla vinternätter 
-                till spänningen av julmorgon, med scener av tomtens 
-                verkstad, renar i flykt, och en stor final som firar 
-                andan av givande och gemenskap.
+                Varje del av ljusshowen är skapad för att sprida julglädje, värme och ett leende till alla som tittar. Så samla familjen, ta på mössan och kom och upplev hur musiken och ljusen väcker julens magi till liv!
               </p>
             </div>
           </Card>
