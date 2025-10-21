@@ -149,29 +149,38 @@ const Contact = () => {
                   className="w-full h-auto rounded-lg transition-transform duration-700 group-hover:scale-105"
                 />
                 
-                {/* Christmas-themed heading overlay */}
-                <div className="absolute top-6 left-1/2 -translate-x-1/2 z-10">
-                  <div className="relative inline-block px-6 py-3 bg-gradient-to-r from-christmas-red/90 via-christmas-green/90 to-christmas-red/90 backdrop-blur-sm rounded-lg border-2 border-christmas-gold/50 shadow-xl">
-                    <h2 className="text-2xl md:text-3xl font-bold text-center relative">
-                      <span className="relative inline-block">
-                        <span className="text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] animate-pulse">
-                          Rödbetsgatan 3
-                        </span>
-                        {/* Decorative Christmas lights string */}
-                        {Array.from({ length: 6 }, (_, i) => (
-                          <span 
+                {/* Christmas garland heading overlay */}
+                <div className="absolute top-8 left-1/2 -translate-x-1/2 z-10">
+                  <div className="relative">
+                    {/* Christmas garland above text */}
+                    <div className="absolute -top-6 left-0 right-0 h-8 flex items-center justify-center">
+                      <svg viewBox="0 0 300 20" className="w-full h-full">
+                        <path 
+                          d="M 0,15 Q 30,5 60,15 T 120,15 T 180,15 T 240,15 T 300,15" 
+                          fill="none" 
+                          stroke="hsl(var(--christmas-green))" 
+                          strokeWidth="4"
+                        />
+                        {/* Christmas lights on garland */}
+                        {Array.from({ length: 8 }, (_, i) => (
+                          <circle 
                             key={i}
-                            className="absolute w-2 h-2 rounded-full animate-twinkle"
-                            style={{ 
-                              backgroundColor: i % 3 === 0 ? 'var(--christmas-red)' : i % 3 === 1 ? 'var(--christmas-gold)' : 'var(--christmas-green)',
-                              animationDelay: `${i * 0.3}s`,
-                              left: `${i * 17}%`,
-                              top: '-12px',
-                              boxShadow: '0 0 10px currentColor'
+                            cx={i * 40 + 20}
+                            cy={15 + (i % 2 === 0 ? -5 : 5)}
+                            r="3"
+                            className="animate-twinkle"
+                            style={{
+                              animationDelay: `${i * 0.2}s`
                             }}
+                            fill={i % 3 === 0 ? 'hsl(var(--christmas-red))' : i % 3 === 1 ? 'hsl(var(--christmas-gold))' : 'hsl(var(--christmas-green))'}
                           />
                         ))}
-                      </span>
+                      </svg>
+                    </div>
+                    
+                    {/* Heading text */}
+                    <h2 className="text-3xl md:text-4xl font-bold text-white drop-shadow-[0_4px_8px_rgba(0,0,0,0.9)] px-6 py-2 bg-black/30 backdrop-blur-sm rounded-lg">
+                      Rödbetsgatan 3
                     </h2>
                   </div>
                 </div>
