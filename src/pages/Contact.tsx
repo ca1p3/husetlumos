@@ -141,6 +141,29 @@ const Contact = () => {
 
           {/* Animated Christmas Map */}
           <Card className="bg-card/50 backdrop-blur-sm border-2 border-primary/30 overflow-hidden group">
+            <CardHeader className="bg-gradient-to-r from-christmas-red/20 via-christmas-green/20 to-christmas-red/20 border-b border-christmas-gold/30">
+              <CardTitle className="text-2xl md:text-3xl font-bold text-center relative">
+                <span className="relative inline-block">
+                  <span className="bg-gradient-to-r from-christmas-red via-christmas-gold to-christmas-green bg-clip-text text-transparent animate-pulse">
+                    Rödbetsgatan 3
+                  </span>
+                  {/* Decorative Christmas lights */}
+                  {Array.from({ length: 6 }, (_, i) => (
+                    <span 
+                      key={i}
+                      className="absolute w-1.5 h-1.5 rounded-full animate-twinkle"
+                      style={{ 
+                        backgroundColor: i % 3 === 0 ? 'var(--christmas-red)' : i % 3 === 1 ? 'var(--christmas-gold)' : 'var(--christmas-green)',
+                        animationDelay: `${i * 0.3}s`,
+                        left: `${i * 17}%`,
+                        top: '-8px',
+                        boxShadow: '0 0 8px currentColor'
+                      }}
+                    />
+                  ))}
+                </span>
+              </CardTitle>
+            </CardHeader>
             <CardContent className="p-0">
               <div className="relative">
                 <img 
