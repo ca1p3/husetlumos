@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Ghost, TreePine, Zap, Heart } from "lucide-react";
+import { Ghost, TreePine, Zap, Heart, MapPin } from "lucide-react";
 import heroImage from "@/assets/huset-lumos-hero.jpg";
 import LiveStatus from "@/components/LiveStatus";
 import Schedule from "@/components/Schedule";
@@ -125,8 +125,18 @@ const Index = () => {
           </div>
         </div>
 
+        {/* Contact Link */}
+        <div className="mt-8">
+          <Link to="/contact">
+            <Button variant="ghost" className="text-muted-foreground hover:text-primary">
+              <MapPin className="w-4 h-4 mr-2" />
+              Hitta hit & Kontakt
+            </Button>
+          </Link>
+        </div>
+
         {/* Footer Info */}
-        <div className="mt-8 text-center">
+        <div className="mt-4 text-center">
           <p className="text-muted-foreground">
             Skapar oförglömliga stunder genom ljusets konst
           </p>
