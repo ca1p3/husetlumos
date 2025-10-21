@@ -2,6 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { MapPin, Phone, Mail, ArrowLeft, Navigation } from "lucide-react";
 import { Link } from "react-router-dom";
+import christmasMap from "@/assets/christmas-map.jpg";
 
 const Contact = () => {
   const address = "Rödbetsgatan 3, 271 54 Ystad";
@@ -138,19 +139,29 @@ const Contact = () => {
             </Card>
           </div>
 
-          {/* Map */}
-          <Card className="bg-card/50 backdrop-blur-sm border-2 border-primary/30">
+          {/* Animated Christmas Map */}
+          <Card className="bg-card/50 backdrop-blur-sm border-2 border-primary/30 overflow-hidden group">
             <CardContent className="p-0">
-              <iframe
-                title="Karta till Huset Lumos"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2244.1234567890123!2d13.8251!3d55.4289!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNTXCsDI1JzQ0LjAiTiAxM8KwNDknMzAuNCJF!5e0!3m2!1ssv!2sse!4v1234567890123!5m2!1ssv!2sse"
-                width="100%"
-                height="450"
-                style={{ border: 0, borderRadius: '0.5rem' }}
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-              />
+              <div className="relative">
+                <img 
+                  src={christmasMap} 
+                  alt="Jultemad karta till Huset Lumos på Rödbetsgatan 3, Ystad"
+                  className="w-full h-auto rounded-lg transition-transform duration-700 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-background/20 to-transparent pointer-events-none" />
+                {/* Twinkling overlay effect */}
+                {Array.from({ length: 5 }, (_, i) => (
+                  <div 
+                    key={i}
+                    className="absolute w-2 h-2 bg-christmas-gold rounded-full animate-twinkle opacity-0"
+                    style={{ 
+                      animationDelay: `${i * 0.8}s`,
+                      left: `${20 + i * 20}%`,
+                      top: `${30 + (i % 2) * 30}%`
+                    }}
+                  />
+                ))}
+              </div>
             </CardContent>
           </Card>
 
