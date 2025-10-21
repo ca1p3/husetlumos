@@ -141,29 +141,6 @@ const Contact = () => {
 
           {/* Animated Christmas Map */}
           <Card className="bg-card/50 backdrop-blur-sm border-2 border-primary/30 overflow-hidden group">
-            <CardHeader className="bg-gradient-to-r from-christmas-red/20 via-christmas-green/20 to-christmas-red/20 border-b border-christmas-gold/30">
-              <CardTitle className="text-2xl md:text-3xl font-bold text-center relative">
-                <span className="relative inline-block">
-                  <span className="bg-gradient-to-r from-christmas-red via-christmas-gold to-christmas-green bg-clip-text text-transparent animate-pulse">
-                    Rödbetsgatan 3
-                  </span>
-                  {/* Decorative Christmas lights */}
-                  {Array.from({ length: 6 }, (_, i) => (
-                    <span 
-                      key={i}
-                      className="absolute w-1.5 h-1.5 rounded-full animate-twinkle"
-                      style={{ 
-                        backgroundColor: i % 3 === 0 ? 'var(--christmas-red)' : i % 3 === 1 ? 'var(--christmas-gold)' : 'var(--christmas-green)',
-                        animationDelay: `${i * 0.3}s`,
-                        left: `${i * 17}%`,
-                        top: '-8px',
-                        boxShadow: '0 0 8px currentColor'
-                      }}
-                    />
-                  ))}
-                </span>
-              </CardTitle>
-            </CardHeader>
             <CardContent className="p-0">
               <div className="relative">
                 <img 
@@ -171,6 +148,34 @@ const Contact = () => {
                   alt="Jultemad karta till Huset Lumos på Rödbetsgatan 3, Ystad"
                   className="w-full h-auto rounded-lg transition-transform duration-700 group-hover:scale-105"
                 />
+                
+                {/* Christmas-themed heading overlay */}
+                <div className="absolute top-6 left-1/2 -translate-x-1/2 z-10">
+                  <div className="relative inline-block px-6 py-3 bg-gradient-to-r from-christmas-red/90 via-christmas-green/90 to-christmas-red/90 backdrop-blur-sm rounded-lg border-2 border-christmas-gold/50 shadow-xl">
+                    <h2 className="text-2xl md:text-3xl font-bold text-center relative">
+                      <span className="relative inline-block">
+                        <span className="text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] animate-pulse">
+                          Rödbetsgatan 3
+                        </span>
+                        {/* Decorative Christmas lights string */}
+                        {Array.from({ length: 6 }, (_, i) => (
+                          <span 
+                            key={i}
+                            className="absolute w-2 h-2 rounded-full animate-twinkle"
+                            style={{ 
+                              backgroundColor: i % 3 === 0 ? 'var(--christmas-red)' : i % 3 === 1 ? 'var(--christmas-gold)' : 'var(--christmas-green)',
+                              animationDelay: `${i * 0.3}s`,
+                              left: `${i * 17}%`,
+                              top: '-12px',
+                              boxShadow: '0 0 10px currentColor'
+                            }}
+                          />
+                        ))}
+                      </span>
+                    </h2>
+                  </div>
+                </div>
+                
                 <div className="absolute inset-0 bg-gradient-to-t from-background/20 to-transparent pointer-events-none" />
                 {/* Twinkling overlay effect */}
                 {Array.from({ length: 5 }, (_, i) => (
