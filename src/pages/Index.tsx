@@ -111,28 +111,26 @@ const Index = () => {
           </Link>
         </div>
 
-        {/* Donation Button */}
+        {/* Action Buttons */}
         <div className="mt-12 text-center">
-          <Link to="/donation">
-            <Button variant="outline" className="sparkle border-primary text-primary hover:bg-primary hover:text-primary-foreground px-8 py-6 text-lg">
-              <Heart className="w-5 h-5 mr-2" />
-              Stöd oss via Swish
-            </Button>
-          </Link>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <Link to="/contact">
+              <Button variant="outline" className="sparkle border-primary text-primary hover:bg-primary hover:text-primary-foreground px-8 py-6 text-lg">
+                <MapPin className="w-5 h-5 mr-2" />
+                Hitta hit & Kontakt
+              </Button>
+            </Link>
+            <Link to="/donation">
+              <Button variant="outline" className="sparkle border-primary text-primary hover:bg-primary hover:text-primary-foreground px-8 py-6 text-lg">
+                <Heart className="w-5 h-5 mr-2" />
+                Stöd oss via Swish
+              </Button>
+            </Link>
+          </div>
           <div className="flex items-center justify-center gap-2 mt-3 text-primary font-semibold text-lg">
             <Heart className="w-5 h-5" fill="currentColor" />
             <p>10% av alla donationer går till Barncancerfonden</p>
           </div>
-        </div>
-
-        {/* Contact Link */}
-        <div className="mt-8">
-          <Link to="/contact">
-            <Button variant="ghost" className="text-muted-foreground hover:text-primary">
-              <MapPin className="w-4 h-4 mr-2" />
-              Hitta hit & Kontakt
-            </Button>
-          </Link>
         </div>
 
         {/* Footer Info */}
