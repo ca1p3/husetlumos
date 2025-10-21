@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -28,6 +29,10 @@ const Snowflake = ({ delay = 0, size = 'w-6 h-6' }: { delay?: number; size?: str
 );
 
 const Christmas = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div className="min-h-screen relative overflow-hidden page-transition" style={{ background: 'var(--gradient-christmas)' }}>
       {/* Hero Background Image */}
