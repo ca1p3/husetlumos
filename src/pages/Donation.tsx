@@ -1,8 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Heart, ArrowLeft, Smartphone } from "lucide-react";
+import { Heart, ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
-import swishQrCode from "@/assets/swish-qr-code.png";
 
 const Donation = () => {
   const swishNumber = "0722392474";
@@ -67,34 +66,15 @@ const Donation = () => {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
-              <div className="grid md:grid-cols-2 gap-6">
-                {/* Swish Number Section */}
-                <div className="bg-background/50 rounded-lg p-6 border border-border">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Smartphone className="w-4 h-4 text-primary" />
-                    <p className="text-sm text-muted-foreground">Swish-nummer</p>
-                  </div>
-                  <p className="text-3xl font-bold text-primary mb-4">{swishNumber}</p>
-                  <Button 
-                    onClick={handleSwishDonation}
-                    className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-6 text-lg"
-                  >
-                    Öppna Swish
-                  </Button>
-                </div>
-
-                {/* QR Code Section */}
-                <div className="bg-background/50 rounded-lg p-6 border border-border flex flex-col items-center justify-center">
-                  <p className="text-sm text-muted-foreground mb-4">Scanna QR-kod</p>
-                  <img 
-                    src={swishQrCode} 
-                    alt="Swish QR-kod för donation" 
-                    className="w-48 h-48 rounded-lg"
-                  />
-                  <p className="text-xs text-muted-foreground mt-3 text-center">
-                    Perfekt om du är på datorn
-                  </p>
-                </div>
+              <div className="bg-background/50 rounded-lg p-6 border border-border">
+                <p className="text-sm text-muted-foreground mb-2">Swish-nummer</p>
+                <p className="text-3xl font-bold text-primary mb-4">{swishNumber}</p>
+                <Button 
+                  onClick={handleSwishDonation}
+                  className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-6 text-lg"
+                >
+                  Öppna Swish
+                </Button>
               </div>
 
               <div className="space-y-3">
