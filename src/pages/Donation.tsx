@@ -48,7 +48,7 @@ const Donation = () => {
             <div className="flex items-center justify-center gap-3 bg-primary/10 rounded-lg px-6 py-4 border-2 border-primary">
               <Heart className="w-8 h-8 text-primary" fill="currentColor" />
               <p className="text-2xl text-primary font-bold">
-                10% av alla donationer går till Barncancerfonden
+                25% av alla donationer går till Barncancerfonden
               </p>
               <Heart className="w-8 h-8 text-primary" fill="currentColor" />
             </div>
@@ -62,7 +62,7 @@ const Donation = () => {
                 Donera via Swish
               </CardTitle>
               <CardDescription>
-                Din donation hjälper oss att skapa ännu mer magi och underhålla våra ljusshower. 10% går till Barncancerfonden.
+                Din donation hjälper oss att skapa ännu mer magi och underhålla våra ljusshower. 25% går till Barncancerfonden.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
@@ -98,7 +98,7 @@ const Donation = () => {
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-primary mt-1">❤️</span>
-                    <span className="font-semibold">10% till Barncancerfonden</span>
+                    <span className="font-semibold">25% till Barncancerfonden</span>
                   </li>
                 </ul>
               </div>
