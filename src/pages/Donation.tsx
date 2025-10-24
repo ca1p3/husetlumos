@@ -1,14 +1,97 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Heart, ArrowLeft } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Heart, ArrowLeft, Trophy } from "lucide-react";
 import { Link } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
+import { z } from "zod";
+
+const donationSchema = z.object({
+  donor_name: z.string().trim().min(1, "Namn måste fyllas i").max(50, "Namnet får vara max 50 tecken"),
+  amount: z.number().min(1, "Belopp måste vara minst 1 kr").max(100000, "Belopp får vara max 100 000 kr"),
+});
 
 const Donation = () => {
   const swishNumber = "0722392474";
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+  const [donorName, setDonorName] = useState("");
+  const [amount, setAmount] = useState("");
 
   const handleSwishDonation = () => {
     // Open Swish app with pre-filled number
     window.location.href = `swish://payment?data={"version":1,"payee":{"value":"${swishNumber}"},"message":{"value":"Donation till Huset Lumos"}}`;
+  };
+
+  // Fetch top 5 donations over 100kr
+  const { data: leaderboard } = useQuery({
+    queryKey: ['donations-leaderboard'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('donations')
+        .select('*')
+        .gte('amount', 100)
+        .order('amount', { ascending: false })
+        .order('created_at', { ascending: false })
+        .limit(5);
+      
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  // Add donation mutation
+  const addDonationMutation = useMutation({
+    mutationFn: async (donation: { donor_name: string; amount: number }) => {
+      donationSchema.parse(donation);
+      const { error } = await supabase
+        .from('donations')
+        .insert([{
+          donor_name: donation.donor_name,
+          amount: donation.amount
+        }]);
+      
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      toast({
+        title: "Tack för din donation! ❤️",
+        description: "Din donation har registrerats på leaderboarden.",
+      });
+      setDonorName("");
+      setAmount("");
+      queryClient.invalidateQueries({ queryKey: ['donations-leaderboard'] });
+    },
+    onError: (error) => {
+      toast({
+        title: "Ett fel uppstod",
+        description: "Kunde inte registrera donationen. Försök igen.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const handleSubmitDonation = (e: React.FormEvent) => {
+    e.preventDefault();
+    const amountNum = parseInt(amount);
+    
+    if (isNaN(amountNum) || amountNum < 1) {
+      toast({
+        title: "Ogiltigt belopp",
+        description: "Ange ett giltigt belopp i kronor.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    addDonationMutation.mutate({
+      donor_name: donorName,
+      amount: amountNum,
+    });
   };
 
   return (
@@ -111,8 +194,92 @@ const Donation = () => {
             </CardContent>
           </Card>
 
+          {/* Leaderboard */}
+          {leaderboard && leaderboard.length > 0 && (
+            <Card className="mt-8 bg-card/50 backdrop-blur-sm border-2 border-primary/30 animate-fadeInUp" style={{ animationDelay: '0.2s' }}>
+              <CardHeader>
+                <CardTitle className="text-2xl flex items-center gap-2">
+                  <Trophy className="w-6 h-6 text-primary" />
+                  Donationsleaderboard
+                </CardTitle>
+                <CardDescription>
+                  Top 5 donatorer som donerat över 100kr
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  {leaderboard.map((donation, index) => (
+                    <div 
+                      key={donation.id}
+                      className="flex items-center justify-between p-4 bg-background/50 rounded-lg border border-border hover:border-primary/50 transition-colors"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold ${
+                          index === 0 ? 'bg-primary text-primary-foreground' :
+                          index === 1 ? 'bg-muted text-muted-foreground' :
+                          index === 2 ? 'bg-muted/50 text-muted-foreground' :
+                          'bg-background text-foreground'
+                        }`}>
+                          {index + 1}
+                        </div>
+                        <span className="font-semibold">{donation.donor_name}</span>
+                      </div>
+                      <span className="text-lg font-bold text-primary">{donation.amount} kr</span>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Add Donation Form */}
+          <Card className="mt-8 bg-card/50 backdrop-blur-sm border-2 border-primary/30 animate-fadeInUp" style={{ animationDelay: '0.3s' }}>
+            <CardHeader>
+              <CardTitle className="text-xl">Registrera din donation</CardTitle>
+              <CardDescription>
+                Efter att du donerat via Swish, fyll i dina uppgifter här för att synas på leaderboarden (kräver minst 100kr)
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <form onSubmit={handleSubmitDonation} className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="donor_name">Ditt namn</Label>
+                  <Input
+                    id="donor_name"
+                    type="text"
+                    placeholder="Ange ditt namn"
+                    value={donorName}
+                    onChange={(e) => setDonorName(e.target.value)}
+                    required
+                    maxLength={50}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="amount">Belopp (kr)</Label>
+                  <Input
+                    id="amount"
+                    type="number"
+                    placeholder="Ange belopp"
+                    value={amount}
+                    onChange={(e) => setAmount(e.target.value)}
+                    required
+                    min="1"
+                    max="100000"
+                  />
+                </div>
+                <Button 
+                  type="submit" 
+                  className="w-full"
+                  disabled={addDonationMutation.isPending}
+                >
+                  {addDonationMutation.isPending ? "Registrerar..." : "Registrera donation"}
+                </Button>
+              </form>
+            </CardContent>
+          </Card>
+
           {/* Thank You Message */}
-          <div className="text-center mt-8 animate-fadeInUp" style={{ animationDelay: '0.2s' }}>
+          <div className="text-center mt-8 animate-fadeInUp" style={{ animationDelay: '0.4s' }}>
             <p className="text-muted-foreground">
               Tack för ditt stöd och för att du hjälper oss att sprida magisk stämning! 🌟
             </p>
