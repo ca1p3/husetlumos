@@ -151,7 +151,7 @@ const LiveStatus = () => {
     }
     
     const totalSeconds = secondsPlayed + secondsRemaining;
-    const progress = totalSeconds > 0 ? (secondsPlayed / totalSeconds) * 100 : 0;
+    const progress = totalSeconds > 0 ? (secondsRemaining / totalSeconds) * 100 : 0;
     
     // Get next sequence from playlist
     let nextSequenceName = "";
