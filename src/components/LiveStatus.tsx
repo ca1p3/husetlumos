@@ -260,14 +260,14 @@ const LiveStatus = () => {
                 {showInfo.nextSequence && (
                   <div className="text-sm text-muted-foreground">{showInfo.nextSequence}</div>
                 )}
-                {showInfo.nextShow && (
+                {showInfo.nextShow && !showInfo.isLive && (
                   <div className="text-sm text-muted-foreground">{showInfo.nextShow}</div>
                 )}
               </div>
             </div>
           </div>
           
-          {countdown && (
+          {countdown && !showInfo.isLive && (
             <div className="text-right">
               <div className="text-sm text-muted-foreground mb-1">Startar om</div>
               <div className="text-base font-bold text-primary animate-pulse">
