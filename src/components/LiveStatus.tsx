@@ -78,7 +78,7 @@ const LiveStatus = () => {
         const data = await response.json();
         setFppStatus(data);
         setLastUpdateTime(Date.now());
-        setBaseSecondsPlayed(data.seconds_played || 0);
+        setBaseSecondsPlayed(Number(data.seconds_played ?? data.seconds_elapsed) || 0);
         
         // Fetch playlist details if currently playing
         if (data.status_name === 'playing' && data.current_playlist?.playlist) {
@@ -140,17 +140,17 @@ const LiveStatus = () => {
     const isPlaying = fppStatus?.status_name === "playing";
     const currentSequence = fppStatus?.current_sequence || fppStatus?.current_playlist?.description || "";
     
-    // Calculate real-time progress (fill up over time)
-    let secondsPlayed = baseSecondsPlayed;
-    let secondsRemainingReported =
-      typeof fppStatus?.seconds_remaining === "number"
-        ? (fppStatus.seconds_remaining as number)
-        : undefined;
+    // Calculate real-time progress (fills up over current sequence time)
+    const toNum = (v: any): number | undefined =>
+      v === null || v === undefined ? undefined : typeof v === 'number' ? v : Number.parseFloat(v);
+
+    let secondsPlayed = Number(baseSecondsPlayed) || 0;
+    let secondsRemainingReported = toNum((fppStatus as any)?.seconds_remaining);
 
     if (isPlaying) {
       const elapsedSinceUpdate = (Date.now() - lastUpdateTime) / 1000;
-      secondsPlayed = baseSecondsPlayed + elapsedSinceUpdate;
-      if (typeof secondsRemainingReported === "number") {
+      secondsPlayed = (Number(baseSecondsPlayed) || 0) + elapsedSinceUpdate;
+      if (typeof secondsRemainingReported === 'number') {
         secondsRemainingReported = Math.max(0, secondsRemainingReported - elapsedSinceUpdate);
       }
     }
