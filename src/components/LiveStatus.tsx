@@ -140,18 +140,37 @@ const LiveStatus = () => {
     const isPlaying = fppStatus?.status_name === "playing";
     const currentSequence = fppStatus?.current_sequence || fppStatus?.current_playlist?.description || "";
     
-    // Calculate real-time progress
+    // Calculate real-time progress (fill up over time)
     let secondsPlayed = baseSecondsPlayed;
-    let secondsRemaining = fppStatus?.seconds_remaining || 0;
-    
+    let secondsRemainingReported =
+      typeof fppStatus?.seconds_remaining === "number"
+        ? (fppStatus.seconds_remaining as number)
+        : undefined;
+
     if (isPlaying) {
       const elapsedSinceUpdate = (Date.now() - lastUpdateTime) / 1000;
       secondsPlayed = baseSecondsPlayed + elapsedSinceUpdate;
-      secondsRemaining = Math.max(0, secondsRemaining - elapsedSinceUpdate);
+      if (typeof secondsRemainingReported === "number") {
+        secondsRemainingReported = Math.max(0, secondsRemainingReported - elapsedSinceUpdate);
+      }
     }
-    
-    const totalSeconds = secondsPlayed + secondsRemaining;
-    const progress = totalSeconds > 0 ? (secondsRemaining / totalSeconds) * 100 : 0;
+
+    let totalSeconds: number | undefined;
+    if (typeof secondsRemainingReported === "number") {
+      totalSeconds = secondsPlayed + secondsRemainingReported;
+    } else if (playlistDetails?.playlistInfo?.total_duration) {
+      totalSeconds = playlistDetails.playlistInfo.total_duration;
+    }
+
+    const clamp = (v: number) => Math.min(100, Math.max(0, v));
+
+    const secondsRemainingCalc =
+      typeof totalSeconds === "number" ? Math.max(0, totalSeconds - secondsPlayed) : undefined;
+
+    const progress =
+      isPlaying && typeof totalSeconds === "number"
+        ? clamp((secondsPlayed / totalSeconds) * 100)
+        : undefined;
     
     // Get next sequence from playlist
     let nextSequenceName = "";
@@ -182,7 +201,7 @@ const LiveStatus = () => {
       icon: <Sparkles className="w-5 h-5" />,
       theme: "default",
       progress: isPlaying ? progress : undefined,
-      secondsRemaining: isPlaying ? Math.round(secondsRemaining) : undefined
+      secondsRemaining: isPlaying && secondsRemainingCalc !== undefined ? Math.round(secondsRemainingCalc) : undefined
     };
   };
 
