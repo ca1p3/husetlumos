@@ -108,6 +108,15 @@ const Donation = () => {
                   Varje bidrag, stort som litet, gör skillnad och uppskattas enormt! ❤️
                 </p>
               </div>
+
+              <div className="bg-primary/10 rounded-lg p-4 border border-primary/20 mt-4">
+                <p className="text-sm text-foreground font-semibold text-center mb-2">
+                  ✨ Full Transparens ✨
+                </p>
+                <p className="text-sm text-foreground/80 text-center">
+                  Efter säsongens slut kommer vi att publicera exakt hur mycket som samlats in och överförts till Barncancerfonden. Vi värdesätter ert förtroende!
+                </p>
+              </div>
             </CardContent>
           </Card>
 
