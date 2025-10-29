@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Ghost, TreePine, Zap, Heart, MapPin } from "lucide-react";
 import heroImage from "@/assets/huset-lumos-hero.jpg";
 import LiveStatus from "@/components/LiveStatus";
+import Schedule from "@/components/Schedule";
 
 const FloatingLight = ({ delay = 0 }: { delay?: number }) => (
   <div 
@@ -48,6 +49,11 @@ const Index = () => {
         {/* Live Status */}
         <div className="mb-8 max-w-2xl w-full">
           <LiveStatus />
+        </div>
+
+        {/* Schedule */}
+        <div className="mb-8 max-w-2xl w-full">
+          <Schedule />
         </div>
 
         {/* Theme Navigation Cards */}
