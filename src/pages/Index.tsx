@@ -44,6 +44,9 @@ const Index = () => {
           <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl">
             Fantastiska ljusshower som förvandlar Halloween och jul till magiska upplevelser
           </p>
+          <div className="text-lg md:text-xl text-christmas font-semibold mb-4 christmas-glow">
+            🎄 Premiärvisning & Tändning: 1 december 🎄
+          </div>
         </div>
 
         {/* Live Status */}
@@ -78,7 +81,7 @@ const Index = () => {
                   <h2 className="text-3xl font-bold text-halloween">Halloween Show</h2>
                   <div className="space-y-2">
                     <p className="text-muted-foreground min-h-[3rem] flex items-center justify-center">
-                      Ingen Halloween-show i år, men vi planerar att återvända 2026!
+                      Det finns planer på att göra en Halloween-show i framtiden!
                     </p>
                     <p className="text-sm text-yellow-500 font-semibold">
                       🚧 Under konstruktion
@@ -86,7 +89,7 @@ const Index = () => {
                   </div>
                 </div>
                 <Button variant="outline" className="border-halloween/50 text-halloween/50 cursor-not-allowed opacity-50" disabled>
-                  Kommer 2026
+                  Kommer snart
                 </Button>
               </div>
             </Card>
