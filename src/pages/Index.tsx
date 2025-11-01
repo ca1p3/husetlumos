@@ -44,9 +44,6 @@ const Index = () => {
           <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl">
             Fantastiska ljusshower som förvandlar Halloween och jul till magiska upplevelser
           </p>
-          <div className="text-lg md:text-xl text-christmas font-semibold mb-4 christmas-glow">
-            🎄 Premiärvisning & Tändning: 1 december 🎄
-          </div>
         </div>
 
         {/* Live Status */}
