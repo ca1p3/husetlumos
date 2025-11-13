@@ -57,10 +57,10 @@ const Index = () => {
         </div>
 
         {/* Theme Navigation Cards */}
-        <div className="grid md:grid-cols-2 gap-8 max-w-4xl w-full">
+        <div className="grid md:grid-cols-2 gap-8 max-w-4xl w-full mx-auto">
           {/* Halloween Card */}
-          <div className="group">
-            <Card className="theme-card p-8 bg-card/50 backdrop-blur-sm border-2 border-halloween/30 h-full relative overflow-hidden cursor-not-allowed">
+          <div className="group mx-auto w-full max-w-md md:max-w-none">
+            <Card className="theme-card p-6 md:p-8 bg-card/50 backdrop-blur-sm border-2 border-halloween/30 h-full relative overflow-hidden cursor-not-allowed">
               {/* Construction Tape Overlay */}
               <div className="absolute inset-0 pointer-events-none z-10">
                 <div className="absolute top-12 left-0 w-full h-12 bg-gradient-to-r from-yellow-400/0 via-yellow-400/90 to-yellow-400/0 transform -rotate-12 flex items-center justify-center">
@@ -75,9 +75,9 @@ const Index = () => {
                   <div className="relative inline-block mx-auto opacity-50">
                     <Ghost className="w-16 h-16 text-halloween" />
                   </div>
-                  <h2 className="text-3xl font-bold text-halloween">Halloween Show</h2>
+                  <h2 className="text-2xl md:text-3xl font-bold text-halloween">Halloween Show</h2>
                   <div className="space-y-2">
-                    <p className="text-muted-foreground min-h-[3rem] flex items-center justify-center">
+                    <p className="text-muted-foreground min-h-[3rem] flex items-center justify-center px-2">
                       Det finns planer på att göra en Halloween-show i framtiden!
                     </p>
                     <p className="text-sm text-yellow-500 font-semibold">
@@ -85,7 +85,7 @@ const Index = () => {
                     </p>
                   </div>
                 </div>
-                <Button variant="outline" className="border-halloween/50 text-halloween/50 cursor-not-allowed opacity-50" disabled>
+                <Button variant="outline" className="border-halloween/50 text-halloween/50 cursor-not-allowed opacity-50 w-full" disabled>
                   Kommer snart
                 </Button>
               </div>
@@ -93,17 +93,17 @@ const Index = () => {
           </div>
 
           {/* Christmas Card */}
-          <Link to="/christmas" className="group">
-            <Card className="theme-card p-8 bg-card/50 backdrop-blur-sm border-2 border-christmas/30 hover:border-christmas/60 h-full">
+          <Link to="/christmas" className="group mx-auto w-full max-w-md md:max-w-none">
+            <Card className="theme-card p-6 md:p-8 bg-card/50 backdrop-blur-sm border-2 border-christmas/30 hover:border-christmas/60 h-full">
               <div className="text-center space-y-4 flex flex-col justify-between min-h-[320px]">
                 <div className="space-y-4">
                   <TreePine className="w-16 h-16 mx-auto text-christmas animate-gentle-glow christmas-glow" />
-                  <h2 className="text-3xl font-bold text-christmas">Julshow</h2>
-                  <p className="text-muted-foreground min-h-[3rem] flex items-center justify-center">
+                  <h2 className="text-2xl md:text-3xl font-bold text-christmas">Julshow</h2>
+                  <p className="text-muted-foreground min-h-[3rem] flex items-center justify-center px-2">
                     Magiskt vinterlandskap med glittrande ljus, festlig musik och hjärtvärmande julstämning
                   </p>
                 </div>
-                <Button variant="outline" className="sparkle border-christmas text-christmas hover:bg-christmas hover:text-foreground">
+                <Button variant="outline" className="sparkle border-christmas text-christmas hover:bg-christmas hover:text-foreground w-full">
                   Upptäck magin
                 </Button>
               </div>
@@ -112,24 +112,24 @@ const Index = () => {
         </div>
 
         {/* Action Buttons */}
-        <div className="mt-12 text-center">
+        <div className="mt-12 text-center w-full max-w-2xl mx-auto px-4">
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Link to="/contact">
-              <Button variant="outline" className="sparkle border-primary text-primary hover:bg-primary hover:text-primary-foreground px-8 py-6 text-lg">
+            <Link to="/contact" className="w-full sm:w-auto">
+              <Button variant="outline" className="sparkle border-primary text-primary hover:bg-primary hover:text-primary-foreground px-6 md:px-8 py-5 md:py-6 text-base md:text-lg w-full sm:w-auto">
                 <MapPin className="w-5 h-5 mr-2" />
                 Hitta hit & Kontakt
               </Button>
             </Link>
-            <Link to="/donation">
-              <Button variant="outline" className="sparkle border-primary text-primary hover:bg-primary hover:text-primary-foreground px-8 py-6 text-lg">
+            <Link to="/donation" className="w-full sm:w-auto">
+              <Button variant="outline" className="sparkle border-primary text-primary hover:bg-primary hover:text-primary-foreground px-6 md:px-8 py-5 md:py-6 text-base md:text-lg w-full sm:w-auto">
                 <Heart className="w-5 h-5 mr-2" />
                 Stöd oss via Swish
               </Button>
             </Link>
           </div>
-          <div className="flex items-center justify-center gap-2 mt-3 text-primary font-semibold text-lg">
-            <Heart className="w-5 h-5" fill="currentColor" />
-            <p>25% av alla donationer går till Barncancerfonden</p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-2 mt-4 text-primary font-semibold text-sm md:text-base">
+            <Heart className="w-5 h-5 flex-shrink-0" fill="currentColor" />
+            <p className="text-center">25% av alla donationer går till Barncancerfonden</p>
           </div>
         </div>
 
