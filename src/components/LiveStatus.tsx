@@ -220,8 +220,8 @@ const LiveStatus = () => {
         : 'bg-card/80 border-border'
     }`}>
       <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4 flex-1">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-3">
+          <div className="flex flex-col md:flex-row items-center gap-4 flex-1 w-full">
             <div className={`relative transition-all duration-300 ${
               showInfo.isLive 
                 ? 'text-primary scale-110' 
@@ -238,8 +238,8 @@ const LiveStatus = () => {
               )}
             </div>
             
-            <div className="flex-1">
-              <div className="flex items-center gap-2 mb-2">
+            <div className="flex-1 text-center md:text-left">
+              <div className="flex items-center justify-center md:justify-start gap-2 mb-2">
                 <h3 className="font-bold text-lg text-foreground">{showInfo.name}</h3>
                 {showInfo.isLive && (
                   <Badge 

@@ -36,7 +36,7 @@ const Index = () => {
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 text-center">
         <div className="mb-8 animate-fadeInUp">
           <div className="flex items-center justify-center mb-4">
-            <Zap className="w-12 h-12 text-primary magical-glow mr-4" />
+            <Zap className="hidden md:block w-12 h-12 text-primary magical-glow mr-4" />
             <h1 className="text-6xl md:text-8xl font-bold bg-gradient-to-r from-primary via-halloween to-christmas-gold bg-clip-text text-transparent">
               Huset Lumos
             </h1>
