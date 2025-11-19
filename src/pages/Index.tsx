@@ -46,6 +46,23 @@ const Index = () => {
           </p>
         </div>
 
+        {/* Premiere Announcement - Only show before December 1st 2025 */}
+        {new Date() < new Date('2025-12-01') && (
+          <div className="mb-6 max-w-2xl w-full animate-fadeInUp">
+            <Card className="p-4 md:p-6 bg-christmas/10 backdrop-blur-sm border-2 border-christmas/40">
+              <div className="flex flex-col items-center gap-2 text-center">
+                <TreePine className="w-8 h-8 text-christmas animate-gentle-glow christmas-glow" />
+                <h3 className="font-bold text-lg md:text-xl text-christmas">
+                  🎄 Premiär 30 november - 1:a advent! 🎄
+                </h3>
+                <p className="text-sm md:text-base text-muted-foreground">
+                  Välkommen till vår första julshow!
+                </p>
+              </div>
+            </Card>
+          </div>
+        )}
+
         {/* Live Status */}
         <div className="mb-8 max-w-2xl w-full">
           <LiveStatus />
