@@ -76,7 +76,7 @@ const Index = () => {
         {/* Theme Navigation Cards */}
         <div className="grid md:grid-cols-2 gap-8 max-w-4xl w-full mx-auto">
           {/* Halloween Card */}
-          <div className="group mx-auto w-full max-w-md md:max-w-none">
+          <div className="group mx-auto w-full max-w-md md:max-w-none order-2 md:order-1">
             <Card className="theme-card p-6 md:p-8 bg-card/50 backdrop-blur-sm border-2 border-halloween/30 h-full relative overflow-hidden cursor-not-allowed">
               {/* Construction Tape Overlay */}
               <div className="absolute inset-0 pointer-events-none z-10">
@@ -110,7 +110,7 @@ const Index = () => {
           </div>
 
           {/* Christmas Card */}
-          <Link to="/christmas" className="group mx-auto w-full max-w-md md:max-w-none">
+          <Link to="/christmas" className="group mx-auto w-full max-w-md md:max-w-none order-1 md:order-2">
             <Card className="theme-card p-6 md:p-8 bg-card/50 backdrop-blur-sm border-2 border-christmas/30 hover:border-christmas/60 h-full">
               <div className="text-center space-y-4 flex flex-col justify-between min-h-[320px]">
                 <div className="space-y-4">
