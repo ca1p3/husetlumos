@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Sparkles, Play } from "lucide-react";
+import { formatSequenceName } from "@/lib/utils";
 
 interface FPPStatus {
   status_name: string;
@@ -138,7 +139,8 @@ const LiveStatus = () => {
 
   const getShowStatus = (): ShowInfo => {
     const isPlaying = fppStatus?.status_name === "playing";
-    const currentSequence = fppStatus?.current_sequence || fppStatus?.current_playlist?.description || "";
+    const rawCurrentSequence = fppStatus?.current_sequence || fppStatus?.current_playlist?.description || "";
+    const currentSequence = rawCurrentSequence ? formatSequenceName(rawCurrentSequence) : "";
     
     // Calculate real-time progress (fills up over current sequence time)
     const toNum = (v: any): number | undefined =>
@@ -174,12 +176,13 @@ const LiveStatus = () => {
     
     // Get next sequence from playlist
     let nextSequenceName = "";
-    if (isPlaying && playlistDetails && currentSequence) {
+    if (isPlaying && playlistDetails && rawCurrentSequence) {
       const currentIndex = playlistDetails.mainPlaylist.findIndex(
-        entry => entry.sequenceName === currentSequence
+        entry => entry.sequenceName === rawCurrentSequence
       );
       if (currentIndex !== -1 && currentIndex < playlistDetails.mainPlaylist.length - 1) {
-        nextSequenceName = playlistDetails.mainPlaylist[currentIndex + 1].sequenceName;
+        const rawNextSequence = playlistDetails.mainPlaylist[currentIndex + 1].sequenceName;
+        nextSequenceName = formatSequenceName(rawNextSequence);
       }
     }
     
