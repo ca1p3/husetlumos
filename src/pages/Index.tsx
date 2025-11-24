@@ -143,7 +143,7 @@ const Index = () => {
                 Stöd oss via Swish
               </Button>
             </Link>
-            <a href="https://facebook.com/husetlumos" target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
+            <a href="https://www.facebook.com/Husetlumos" target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
               <Button variant="outline" className="sparkle border-primary text-primary hover:bg-primary hover:text-primary-foreground px-6 md:px-8 py-5 md:py-6 text-base md:text-lg w-full sm:w-auto">
                 <Facebook className="w-5 h-5 mr-2" />
                 Följ oss på Facebook
