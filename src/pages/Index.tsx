@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Ghost, TreePine, Zap, Heart, MapPin } from "lucide-react";
+import { Ghost, TreePine, Zap, Heart, MapPin, Facebook } from "lucide-react";
 import heroImage from "@/assets/huset-lumos-hero.jpg";
 import LiveStatus from "@/components/LiveStatus";
 import Schedule from "@/components/Schedule";
@@ -143,6 +143,12 @@ const Index = () => {
                 Stöd oss via Swish
               </Button>
             </Link>
+            <a href="https://facebook.com/husetlumos" target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
+              <Button variant="outline" className="sparkle border-primary text-primary hover:bg-primary hover:text-primary-foreground px-6 md:px-8 py-5 md:py-6 text-base md:text-lg w-full sm:w-auto">
+                <Facebook className="w-5 h-5 mr-2" />
+                Följ oss på Facebook
+              </Button>
+            </a>
           </div>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-2 mt-4 text-primary font-semibold text-sm md:text-base">
             <Heart className="w-5 h-5 flex-shrink-0" fill="currentColor" />
