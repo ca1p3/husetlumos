@@ -160,12 +160,12 @@ const Christmas = () => {
           <h2 className="text-3xl font-bold text-christmas-gold mb-8">Show-schema</h2>
           <div className="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto">
             <Card className="bg-christmas-dark/80 backdrop-blur-sm border-christmas-gold/30 p-6">
-              <h3 className="text-xl font-bold text-christmas-gold mb-2">Lördagar i December</h3>
+              <h3 className="text-xl font-bold text-christmas-gold mb-2">Lördagar fram till julafton</h3>
               <p className="text-green-100 text-lg font-semibold mb-2">Kl 17:00, 18:00 & 19:00</p>
               <p className="text-sm text-green-200">3 shower à 20-30 minuter</p>
             </Card>
             <Card className="bg-christmas-dark/80 backdrop-blur-sm border-christmas-gold/30 p-6">
-              <h3 className="text-xl font-bold text-christmas-gold mb-2">Söndagar i December</h3>
+              <h3 className="text-xl font-bold text-christmas-gold mb-2">Söndagar fram till julafton</h3>
               <p className="text-green-100 text-lg font-semibold mb-2">Kl 16:00, 17:00 & 18:00</p>
               <p className="text-sm text-green-200">3 shower à 20-30 minuter</p>
             </Card>
