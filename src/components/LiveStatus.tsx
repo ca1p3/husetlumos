@@ -7,7 +7,7 @@ const LiveStatus = () => {
   
   useEffect(() => {
     const calculateCountdown = () => {
-      const targetDate = new Date('2026-12-01T00:00:00');
+      const targetDate = new Date('2026-11-29T00:00:00');
       const now = new Date();
       const diff = targetDate.getTime() - now.getTime();
       
@@ -52,7 +52,7 @@ const LiveStatus = () => {
           </div>
           
           <div className="text-right">
-            <div className="text-sm text-muted-foreground mb-1">Nedräkning till 1 dec 2026</div>
+            <div className="text-sm text-muted-foreground mb-1">Nedräkning till första advent</div>
             <div className="text-base font-bold text-primary animate-pulse">
               {countdown}
             </div>
