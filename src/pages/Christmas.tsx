@@ -162,7 +162,7 @@ const Christmas = () => {
             <Card className="bg-christmas-dark/80 backdrop-blur-sm border-christmas-gold/30 p-6">
               <h3 className="text-xl font-bold text-christmas-gold mb-2">Lördagar fram till julafton</h3>
               <p className="text-green-100 text-lg font-semibold mb-2">Kl 16:00, 17:00 & 18:00</p>
-              <p className="text-sm text-green-200">3 shower à 20-30 minuter</p>
+              <p className="text-sm text-green-200">3 shower à 15-18 minuter</p>
             </Card>
           </div>
         </div>
